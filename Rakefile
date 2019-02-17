@@ -18,7 +18,7 @@ symlinks = FileList[
   '.bashrc',
   '.bash_profile',
   '.profile',
-  '.emacs.d',
+  '.doom.d',
   '.screenrc',
   '.spacemacs.d',
   '.gitconfig',
@@ -71,7 +71,7 @@ task :install, [:prefix] do |t, args|
   generated.each do |f|
     from = File.join(here, f)
     to = File.join(args.prefix, File.basename(f))
-    install(from, to)
+    File.exists? from and install(from, to)
   end
 
   symlinks.each do |f|
