@@ -29,9 +29,10 @@ apt-get install -y \
   python3 \
   python3-keyring \
   nodejs \
-  ruby
+  ruby 
 
 ### Configure
 systemctl restart gdm3
 
+### Install dotfiles
 sudo -u $USER rake -f/dotfiles/Rakefile install[$TARGET]
