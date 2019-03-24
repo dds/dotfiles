@@ -1,3 +1,6 @@
 [submodule "bashrc"]
 	path = bashrc
 	url = git@github.com:dds/bashrc.git
+[submodule "spacemacsrc"]
+	path = spacemacsrc
+	url = git@github.com:dds/spacemacsrc.git
