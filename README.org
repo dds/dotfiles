@@ -3,5 +3,5 @@
 * Installation
 
 #+begin_example sh
-git clone --recurse-submodules -j8 git@github.com:dds/config.git
+git clone --recurse-submodules -j8 https://github.com/dds/dotfiles
 #+end_example
