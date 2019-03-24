@@ -1,4 +1,8 @@
 #!/bin/sh
+USER=${USER:-vagrant}
+TARGET=${TARGET:-$(getent passwd "$USER" | cut -d: -f6)}
+
+### Set environment variables
 export DEBIAN_FRONTEND=noninteractive
 
 ### Add external package sources
@@ -22,9 +26,14 @@ apt-get install -y \
   gnome-session \
   gnome-terminal \
   isync \
+  python3 \
   python3-keyring \
-  nodejs
+  nodejs \
+  ruby
 
 ### Configure
-sudo -u vagrant git checkout --recurse-submodules /dotfiles ~vagrant/dotfiles
-sudo -u vagrant ~vagrant/dotfiles/install
+systemctl restart gdm3
+
+rm -rf /tmp/dotfiles
+sudo -u $USER git clone --recurse-submodules /dotfiles /tmp/dotfiles
+sudo -u $USER rake -f /tmp/dotfiles/Rakefile install[$TARGET]

@@ -11,13 +11,13 @@ export PASSWORD_STORE_DIR=~/Sync/Private/PassStore
 export PATH=~/.local/bin:~/src/mu/mu:~/.cargo/bin:$GOPATH/bin:$GOHOME/bin:$PATH
 
 if echo "$SHELL" | grep -q bash; then
-    declare SSH_AUTH_SOCK
-    SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
-    if [[ $? -eq 0 ]]; then
-        export SSH_AUTH_SOCK
-        gpgconf --launch gpg-agent
-    fi
-    if [[ -f ~/.bashrc ]]; then
-        . ~/.bashrc
-    fi
+   declare SSH_AUTH_SOCK
+   SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+   if [[ $? -eq 0 ]]; then
+       export SSH_AUTH_SOCK
+       gpgconf --launch gpg-agent
+   fi
+   if [[ -r ~/.bashrc ]]; then
+       . ~/.bashrc
+   fi
 fi
