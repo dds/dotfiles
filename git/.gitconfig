@@ -1,0 +1,19 @@
+[core]
+	pager = /bin/cat
+[push]
+	default = simple
+[user]
+	name = David Smith
+	email = davidsmith@acm.org
+	signingKey = 0x22B8564124FA9655
+[commit]
+	gpgsign = true
+[alias]
+	lola = log --graph --decorate --pretty=oneline --abbrev-commit
+	lol = log --graph --decorate --pretty=oneline --abbrev-commit
+[github]
+	user = dds
+[hub]
+	protocol = ssh
+[status]
+	submoduleSummary = true
