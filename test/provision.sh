@@ -26,5 +26,5 @@ apt-get install -y \
   nodejs
 
 ### Configure
-sudo -u vagrant git checkout /dotfiles ~vagrant/dotfiles
+sudo -u vagrant git checkout --recurse-submodules /dotfiles ~vagrant/dotfiles
 sudo -u vagrant ~vagrant/dotfiles/install
