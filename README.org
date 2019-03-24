@@ -1,0 +1,7 @@
+#+TITLE: Configuration Metarepo
+
+* Installation
+
+#+begin_example sh
+git clone --recurse-submodules -j8 git@github.com:dds/config.git
+#+end_example
