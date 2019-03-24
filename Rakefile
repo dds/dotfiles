@@ -8,6 +8,7 @@ task :install, [:prefix] do |t, args|
     '.profile',
     '.emacs.d',
     '.spacemacs.d',
+    '.gitconfig'
   ]
   symlinks.each do |target|
     from = File.join(File.dirname(__FILE__), target)
