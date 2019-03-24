@@ -10,9 +10,9 @@ task :install, [:prefix] do |t, args|
     '.spacemacs.d',
   ]
   symlinks.each do |target|
-    from = File.join(pwd, target)
+    from = File.join(File.dirname(__FILE__), target)
     to = File.join(args.prefix, target)
-    rm(to)
+    rm_f(to)
     ln_sf(from, to)
   end
 end

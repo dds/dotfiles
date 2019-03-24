@@ -34,6 +34,4 @@ apt-get install -y \
 ### Configure
 systemctl restart gdm3
 
-rm -rf /tmp/dotfiles
-sudo -u $USER git clone --recurse-submodules /dotfiles /tmp/dotfiles
-sudo -u $USER rake -f /tmp/dotfiles/Rakefile install[$TARGET]
+sudo -u $USER rake -f/dotfiles/Rakefile install[$TARGET]
