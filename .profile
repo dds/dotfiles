@@ -10,7 +10,12 @@ export GOHOME=/usr/local/go
 export PASSWORD_STORE_DIR=~/Sync/Private/PassStore
 export PATH=~/util:~/src/mu/mu:~/.cargo/bin:$GOPATH/bin:$GOHOME/bin:~/.local/bin:$PATH
 
-if ( which gpgconf && which gpg-agent ) >/dev/null; then
+
+_is_ssh() {
+    [ -n "${SSH_CONNECTION-}${SSH_CLIENT-}${SSH_TTY-}" ]
+}
+
+if ( ! _is_ssh && which gpgconf && which gpg-agent ) >/dev/null; then
    declare SSH_AUTH_SOCK
    SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
    if [[ $? -eq 0 ]]; then
