@@ -1,0 +1,34 @@
+{% for account in accounts %}
+### {{ account.user }}
+IMAPStore {{ account.slug }}-imap
+Host {{ account.host }}
+User {{ account.user }}
+PassCmd "keyring get {{ account.host }} {{ account.user }}"
+Port 993
+SSLType IMAPS
+SSLVersions TLSv1.2
+AuthMechs LOGIN
+
+MaildirStore {{ account.slug }}-local
+Path ~/mail/{{ account.slug }}
+Inbox ~/mail/{{ account.slug }}/inbox
+  
+  {% for (local, remote) in account.mailboxes %}
+
+Channel {{ account.slug }}-{{ local }}
+Master ":{{ account.slug }}-imap:{{ remote }}"
+Slave ":{{ account.slug}}-local:{{ local }}"
+Create Slave
+Expunge Both
+SyncState *
+Sync All
+  {% endfor %}
+
+{% endfor %}
+
+Group all
+{% for account in accounts %}
+  {% for (local, _) in account.mailboxes %}
+Channel {{ account.slug }}-{{ local }}
+  {% endfor %}
+{% endfor %}

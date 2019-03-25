@@ -29,7 +29,10 @@ apt-get install -y \
   python3 \
   python3-keyring \
   nodejs \
-  ruby 
+  ruby \
+  ruby-gir-ffi
+
+gem install rake
 
 ### Configure
 systemctl restart gdm3

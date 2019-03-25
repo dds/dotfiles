@@ -1,7 +1,11 @@
+require 'rake/clean'
+
 desc "Install dotfiles"
-task :install, [:prefix] do |t, args| 
+task :install, [:prefix] => [:pythonsetup] do |t, args|
+  here = File.dirname(__FILE__)
   args.with_defaults(:prefix => "target")
   mkdir_p args.prefix
+
   symlinks = FileList[
     '.bashrc',
     '.bash_profile',
@@ -10,10 +14,18 @@ task :install, [:prefix] do |t, args|
     '.spacemacs.d',
     '.gitconfig'
   ]
-  symlinks.each do |target|
-    from = File.join(File.dirname(__FILE__), target)
-    to = File.join(args.prefix, target)
+  symlinks.each do |f|
+    from = File.join(here, f)
+    to = File.join(args.prefix, f)
     rm_f(to)
     ln_sf(from, to)
   end
+
+  mbsyncrc = File.join(args.prefix, '.mbsyncrc')
+  genmbsyncrc = File.join(here, 'bin/genmbsyncrc')
+  sh %{ #{genmbsyncrc} >| #{mbsyncrc} }
+end
+
+task :pythonsetup do
+  sh %{ pip install -q -r requirements.txt }
 end

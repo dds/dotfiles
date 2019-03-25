@@ -1,0 +1,44 @@
+#!/usr/bin/env python3
+"""Generate mbsyncrc for all gmail IMAP accounts in keyring."""
+import os
+from typing import Iterable
+
+import jinja2
+import keyring
+import secretstorage
+
+
+class Account(object):
+    def __init__(self, user, host):
+        self.user = user
+        self.slug = user.split('@')[1].split('.')[-2]
+        self.host = host
+        self.mailboxes = [
+            ('inbox', 'INBOX'),
+            ('sent', '[Gmail]/Sent Mail'),
+            ('drafts', '[Gmail]/Drafts'),
+            ('archive', '[Gmail]/All Mail'),
+            ('spam', '[Gmail]/Spam'),
+            ('trash', '[Gmail]/Trash'),
+        ]
+
+
+def getAccounts(collection: secretstorage.collection.Collection) -> Iterable:
+    for i in collection.search_items({'service': 'imap.gmail.com'}):
+        a = i.get_attributes()
+        if '@' in a.get('username', ''):
+            yield Account(a.get('username'), a.get('service'))
+
+
+def main():
+    env = jinja2.Environment(
+        loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
+        trim_blocks=True,
+        lstrip_blocks=True)
+    template = env.get_template('mbsyncrc.j2')
+    c = keyring.get_keyring().get_preferred_collection()
+    print(template.render(accounts=list(getAccounts(c))))
+
+
+if __name__ == '__main__':
+    main()
