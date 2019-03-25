@@ -1,19 +1,30 @@
 require 'rake/clean'
 
-desc "Install dotfiles"
-task :install, [:prefix] => [:pythonsetup] do |t, args|
-  here = File.dirname(__FILE__)
+here = File.dirname(__FILE__)
+build = File.join(here, 'build')
+CLEAN.include('build/*')
+
+# These will each be installed into the target
+symlinks = FileList[
+  '.bashrc',
+  '.bash_profile',
+  '.profile',
+  '.emacs.d',
+  '.spacemacs.d',
+  '.gitconfig'
+]
+
+# These generated files will be copied into the target
+generated = FileList[
+  'build/.msmtprc',
+  'build/.mbsyncrc'
+]
+
+task :install, [:prefix] => [:build] do |t, args|
   args.with_defaults(:prefix => "target")
+
   mkdir_p args.prefix
 
-  symlinks = FileList[
-    '.bashrc',
-    '.bash_profile',
-    '.profile',
-    '.emacs.d',
-    '.spacemacs.d',
-    '.gitconfig'
-  ]
   symlinks.each do |f|
     from = File.join(here, f)
     to = File.join(args.prefix, f)
@@ -21,15 +32,22 @@ task :install, [:prefix] => [:pythonsetup] do |t, args|
     ln_sf(from, to)
   end
 
-  mbsyncrc = File.join(args.prefix, '.mbsyncrc')
+  generated.each do |f|
+    from = File.join(here, f)
+    to = File.join(args.prefix, File.basename(f))
+    install(from, to)
+  end
+end
+
+task :build do |t|
+  mkdir_p build
+
+  mbsyncrc = File.join(build, '.mbsyncrc')
   genmbsyncrc = File.join(here, 'bin/genmbsyncrc')
   sh %{ #{genmbsyncrc} >| #{mbsyncrc} }
 
-  msmtprc = File.join(args.prefix, '.msmtprc')
+  msmtprc = File.join(build, '.msmtprc')
   genmsmtprc = File.join(here, 'bin/genmsmtprc')
   sh %{ #{genmsmtprc} >| #{msmtprc} }
 end
 
-task :pythonsetup do
-  sh %{ pip install -q -r requirements.txt }
-end

@@ -2,3 +2,5 @@
 .venv/*
 test/.vagrant/*
 target/
+build/
+

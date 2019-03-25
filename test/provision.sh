@@ -26,11 +26,12 @@ apt-get install -y \
   gnome-session \
   gnome-terminal \
   isync \
+  msmtp \
   python3 \
-  python3-keyring \
+  python3-pip \
+  python3-jinja2 \
   nodejs \
-  ruby \
-  ruby-gir-ffi
+  ruby
 
 gem install rake
 
