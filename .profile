@@ -10,14 +10,17 @@ export GOHOME=/usr/local/go
 export PASSWORD_STORE_DIR=~/Sync/Private/PassStore
 export PATH=~/util:~/src/mu/mu:~/.cargo/bin:$GOPATH/bin:$GOHOME/bin:~/.local/bin:$PATH
 
-if echo "$SHELL" | grep -q bash; then
+if ( which gpgconf && which gpg-agent ) >/dev/null; then
    declare SSH_AUTH_SOCK
    SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
    if [[ $? -eq 0 ]]; then
        export SSH_AUTH_SOCK
        gpgconf --launch gpg-agent
    fi
-   if [[ -r ~/.bashrc ]]; then
-       . ~/.bashrc
-   fi
+fi
+
+if echo "$0" | grep -q bash >/dev/null; then
+    if [[ -r ~/.bashrc ]]; then
+        . ~/.bashrc
+    fi
 fi
