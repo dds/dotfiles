@@ -1,0 +1,42 @@
+defaults
+logfile ~/.msmtp.log
+tls on
+tls_starttls off
+tls_trust_file /etc/ssl/certs/ca-certificates.crt
+auth on
+port 465
+host smtp.gmail.com
+{% for account in accounts %}
+
+account {{ account.slug }}
+user {{ account.user }}
+passwordeval keyring get {{ account.host }} {{ account.user }}
+from {{ account.user }}
+{% endfor %}
+
+account acm :gmail
+from davidsmith@acm.org
+
+account dds :bosabosa
+from dds@bosabosa.org
+
+account test :bosabosa
+from test@bosabosa.org
+
+account testing :bosabosa
+from testing@bosabosa.org
+
+account tucows :bosabosa
+from tucows@bosabosa.org
+
+account usgov :bosabosa
+from usgov@bosabosa.org
+
+account sfusd :bosabosa
+from sfusd@bosabosa.org
+
+account ymcasf :bosabosa
+from ymcasf@bosabosa.org
+
+account softcore :bosabosa
+from softcore@bosabosa.org

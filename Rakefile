@@ -24,6 +24,10 @@ task :install, [:prefix] => [:pythonsetup] do |t, args|
   mbsyncrc = File.join(args.prefix, '.mbsyncrc')
   genmbsyncrc = File.join(here, 'bin/genmbsyncrc')
   sh %{ #{genmbsyncrc} >| #{mbsyncrc} }
+
+  msmtprc = File.join(args.prefix, '.msmtprc')
+  genmsmtprc = File.join(here, 'bin/genmsmtprc')
+  sh %{ #{genmsmtprc} >| #{msmtprc} }
 end
 
 task :pythonsetup do
