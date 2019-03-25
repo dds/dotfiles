@@ -31,31 +31,20 @@ def getAccounts(collection: secretstorage.collection.Collection) -> Iterable:
             yield Account(a.get('username'), a.get('service'))
 
 
-def genmbsyncrc():
-    env = jinja2.Environment(
-        loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
-        trim_blocks=True,
-        lstrip_blocks=True)
-    template = env.get_template('mbsyncrc.j2')
-    c = keyring.get_keyring().get_preferred_collection()
-    print(template.render(accounts=list(getAccounts(c))))
-
-
-def genmsmtprc():
-    env = jinja2.Environment(
-        loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
-        trim_blocks=True,
-        lstrip_blocks=True)
-    template = env.get_template('msmtprc.j2')
+def generate(template):
     c = keyring.get_keyring().get_preferred_collection()
     print(template.render(accounts=list(getAccounts(c))))
 
 
 if __name__ == '__main__':
     prog = os.path.basename(sys.argv[0])
+    env = jinja2.Environment(
+        loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
+        trim_blocks=True,
+        lstrip_blocks=True)
     if prog == "genmbsyncrc":
-        genmbsyncrc()
+        generate(template=env.get_template('mbsyncrc.j2'))
     elif prog == "genmsmtprc":
-        genmsmtprc()
+        generate(template=env.get_template('msmtprc.j2'))
     else:
         raise RuntimeError("$0=%s; don't know what to do" % sys.argv[0])
