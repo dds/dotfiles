@@ -6,6 +6,7 @@ TARGET=${TARGET:-$(getent passwd "$USER" | cut -d: -f6)}
 export DEBIAN_FRONTEND=noninteractive
 
 ### Add external package sources
+add-apt-repository --yes --no-update ppa:yubico/stable
 add-apt-repository --yes --no-update ppa:kelleyk/emacs
 curl -sLS https://deb.nodesource.com/setup_10.x | sh -x
 
@@ -37,7 +38,9 @@ apt-get install -y --ignore-missing \
   chromium-browser \
   greybird-gtk-theme \
   x11-xkb-utils \
-  workrave
+  workrave \
+  yubikey-personalization-gui \
+  python3-yubikey-manager
 
 if ! dpkg-query -s keybase >/dev/null; then
     curl -sLS https://prerelease.keybase.io/keybase_amd64.deb -o /tmp/keybase_amd64.deb
