@@ -18,7 +18,7 @@
              ("z" . dds-mu4e/view-mark-spam-and-next)
            )
     :config
-    (add-to-list 'Info-directory-list "~/mu/mu4e")
+    (add-to-list 'Info-directory-list "~/src/mu/mu4e")
     (setq
      mu4e-maildir "~/mail"
      mu4e-confirm-quit nil
@@ -44,7 +44,7 @@
      mu4e-refile-folder (lambda (msg) (dds-mu4e//maildir-subfolder "archive" msg))
      mu4e-trash-folder (lambda (msg) (dds-mu4e//maildir-subfolder "trash" msg))
      mu4e-drafts-folder (lambda (msg) (or (dds-mu4e//maildir-subfolder "drafts" msg)
-                                          "/main/drafts"))
+                                          "/gmail/drafts"))
      mu4e-sent-messages-behavior 'delete
      mu4e-view-show-addresses t
      )
@@ -63,10 +63,10 @@
    mu4e-context-policy 'pick-first
    mu4e-contexts
     `(,(make-mu4e-context
-        :name "main"
+        :name "gmail"
         :match-func (lambda (msg)
                       (when msg
-                        (string-prefix-p "/main" (mu4e-message-field msg :maildir))))
+                        (string-prefix-p "/gmail" (mu4e-message-field msg :maildir))))
         :vars `(( mu4e-mail-from-address . ,user-mail-address )))
       ,(make-mu4e-context
         :name "bosabosa"

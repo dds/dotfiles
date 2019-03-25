@@ -10,7 +10,7 @@ SSLVersions TLSv1.2
 AuthMechs LOGIN
 
 MaildirStore {{ account.slug }}-local
-Path ~/mail/{{ account.slug }}
+Path ~/mail/{{ account.slug }}/
 Inbox ~/mail/{{ account.slug }}/inbox
   
   {% for (local, remote) in account.mailboxes %}
