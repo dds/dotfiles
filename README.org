@@ -1,7 +1,8 @@
-#+TITLE: Configuration Metarepo
+#+TITLE: Config Files
 
-* Installation
+* Quick Install
 
 #+begin_example sh
 git clone --recurse-submodules -j8 https://github.com/dds/dotfiles
+rake -f dotfiles/Rakefile install[$HOME]
 #+end_example
