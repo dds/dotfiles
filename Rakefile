@@ -4,7 +4,8 @@ here = File.dirname(__FILE__)
 build = File.join(here, 'build')
 CLEAN.include('build/*')
 
-# These will each be installed into the target symlinks = FileList[
+# These will each be installed into the target
+symlinks = FileList[
   '.bashrc',
   '.bash_profile',
   '.profile',
@@ -63,7 +64,7 @@ task :install, [:prefix] do |t, args|
   mkdir_p prefix_autostart_dir
   local_autostart_dir = File.join(here, autostart_dir)
   Dir.glob(File.join(local_autostart_dir, '*')).each do |f|
-    to = File.join(prefix_systemd_dir, File.basename(f))
+    to = File.join(prefix_autostart_dir, File.basename(f))
     ln_sf(f, to)
   end
 end

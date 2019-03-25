@@ -7,7 +7,7 @@ export DEBIAN_FRONTEND=noninteractive
 
 ### Add external package sources
 add-apt-repository --yes --no-update ppa:kelleyk/emacs
-curl -sL https://deb.nodesource.com/setup_10.x | sh -x
+curl -sLS https://deb.nodesource.com/setup_10.x | sh -x
 
 ### Update packages
 apt-get update
@@ -22,6 +22,8 @@ apt-get install -y --ignore-missing \
   gdm3 \
   gnome-session \
   gnome-terminal \
+  gpg \
+  gpg-agent \
   isync \
   msmtp \
   python3 \
@@ -38,7 +40,7 @@ apt-get install -y --ignore-missing \
   workrave
 
 if ! dpkg-query -s keybase >/dev/null; then
-    curl https://prerelease.keybase.io/keybase_amd64.deb -o /tmp/keybase_amd64.deb
+    curl -sLS https://prerelease.keybase.io/keybase_amd64.deb -o /tmp/keybase_amd64.deb
     dpkg -i /tmp/keybase_amd64.deb
 fi
 
