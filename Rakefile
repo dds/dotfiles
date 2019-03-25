@@ -4,8 +4,7 @@ here = File.dirname(__FILE__)
 build = File.join(here, 'build')
 CLEAN.include('build/*')
 
-# These will each be installed into the target
-symlinks = FileList[
+# These will each be installed into the target symlinks = FileList[
   '.bashrc',
   '.bash_profile',
   '.profile',
@@ -19,6 +18,14 @@ symlinks = FileList[
 generated = FileList[
   'build/.msmtprc',
   'build/.mbsyncrc'
+]
+
+# Systemd units to enable
+systemd_units = [
+  'mbsync.timer',
+  'keybase.service',
+  'kbfs.service',
+  'syncthing.service',
 ]
 
 task :install, [:prefix] do |t, args|
@@ -37,6 +44,27 @@ task :install, [:prefix] do |t, args|
     from = File.join(here, f)
     to = File.join(args.prefix, File.basename(f))
     install(from, to)
+  end
+
+  systemd_dir = '.config/systemd/user'
+  prefix_systemd_dir = File.join(args.prefix, systemd_dir)
+  mkdir_p prefix_systemd_dir
+  local_systemd_dir = File.join(here, systemd_dir)
+  Dir.glob(File.join(local_systemd_dir, '*')).each do |f| 
+    to = File.join(prefix_systemd_dir, File.basename(f))
+    ln_sf(f, to)
+  end
+  systemd_units.each do |f|
+    sh %{ systemctl --user enable #{f} }
+  end
+
+  autostart_dir = '.config/autostart'
+  prefix_autostart_dir = File.join(args.prefix, autostart_dir)
+  mkdir_p prefix_autostart_dir
+  local_autostart_dir = File.join(here, autostart_dir)
+  Dir.glob(File.join(local_autostart_dir, '*')).each do |f|
+    to = File.join(prefix_systemd_dir, File.basename(f))
+    ln_sf(f, to)
   end
 end
 

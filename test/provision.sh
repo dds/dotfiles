@@ -16,11 +16,8 @@ apt-get update
 apt-get remove -y --purge \
   emacs25-common
 
-### Bring the whole system up to date
-apt-get -u -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" dist-upgrade
-
 ### Install extra packages
-apt-get install -y \
+apt-get install -y --ignore-missing \
   emacs26 \
   gdm3 \
   gnome-session \
@@ -32,8 +29,23 @@ apt-get install -y \
   python3-jinja2 \
   nodejs \
   ruby \
-  screen 
+  screen \
+  syncthing \
+  chrome-gnome-shell \
+  chromium-browser \
+  greybird-gtk-theme \
+  x11-xkb-utils \
+  workrave
 
+if ! dpkg-query -s keybase >/dev/null; then
+    curl https://prerelease.keybase.io/keybase_amd64.deb -o /tmp/keybase_amd64.deb
+    dpkg -i /tmp/keybase_amd64.deb
+fi
+
+### Bring the whole system up to date
+apt-get -u -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" dist-upgrade
+
+### Compile tools from downloaded software
 gem install rake
 
 ### Configure

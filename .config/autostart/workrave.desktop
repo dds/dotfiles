@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Exec=/usr/bin/workrave
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=true
+Name[en_US]=workrave
+Name=workrave
+Comment[en_US]=Workrave prevent RSI
+Comment=Workrave prevent RSI
