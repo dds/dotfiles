@@ -21,7 +21,7 @@ generated = FileList[
   'build/.mbsyncrc'
 ]
 
-task :install, [:prefix] => [:build] do |t, args|
+task :install, [:prefix] do |t, args|
   args.with_defaults(:prefix => "target")
 
   mkdir_p args.prefix
