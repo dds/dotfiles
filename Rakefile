@@ -4,6 +4,12 @@ here = File.dirname(__FILE__)
 build = File.join(here, 'build')
 CLEAN.include('build/*')
 
+# These directories will be created in the target
+dirs = Filelist [
+  '.ssh',
+  '.gnupg',
+]
+
 # These will each be installed into the target
 symlinks = FileList[
   '.bashrc',
@@ -12,7 +18,9 @@ symlinks = FileList[
   '.emacs.d',
   '.screenrc',
   '.spacemacs.d',
-  '.gitconfig'
+  '.gitconfig',
+  '.gnupg/gpg-agent.conf',
+  '.gnupg/gpg.conf',
 ]
 
 # These generated files will be copied into the target
@@ -34,6 +42,11 @@ task :install, [:prefix] do |t, args|
 
   mkdir_p args.prefix
 
+  dirs.each do |d|
+    dest = File.join(args.prefix, d)
+    mkdir_p dest
+  end
+
   symlinks.each do |f|
     from = File.join(here, f)
     to = File.join(args.prefix, f)
@@ -46,6 +59,10 @@ task :install, [:prefix] do |t, args|
     to = File.join(args.prefix, File.basename(f))
     install(from, to)
   end
+
+  # TODO
+  # For each line of these SSH keys, add to target keys if not already there
+  # ssh_keys = File.join(here, '.ssh/authorized_keys')
 
   systemd_dir = '.config/systemd/user'
   prefix_systemd_dir = File.join(args.prefix, systemd_dir)
