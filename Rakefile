@@ -5,7 +5,7 @@ build = File.join(here, 'build')
 CLEAN.include('build/*')
 
 # These directories will be created in the target
-dirs = Filelist [
+dirs = FileList[
   '.ssh',
   '.gnupg',
 ]
