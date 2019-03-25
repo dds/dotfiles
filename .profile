@@ -8,7 +8,7 @@ export QT_IM_MODULE="ibus"
 export GOPATH=~/go
 export GOHOME=/usr/local/go
 export PASSWORD_STORE_DIR=~/Sync/Private/PassStore
-export PATH=~/.local/bin:~/src/mu/mu:~/.cargo/bin:$GOPATH/bin:$GOHOME/bin:$PATH
+export PATH=~/util:~/src/mu/mu:~/.cargo/bin:$GOPATH/bin:$GOHOME/bin:~/.local/bin:$PATH
 
 if echo "$SHELL" | grep -q bash; then
    declare SSH_AUTH_SOCK
