@@ -10,6 +10,7 @@ symlinks = FileList[
   '.bash_profile',
   '.profile',
   '.emacs.d',
+  '.screenrc',
   '.spacemacs.d',
   '.gitconfig'
 ]

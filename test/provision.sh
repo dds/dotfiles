@@ -31,7 +31,8 @@ apt-get install -y \
   python3-pip \
   python3-jinja2 \
   nodejs \
-  ruby
+  ruby \
+  screen 
 
 gem install rake
 
