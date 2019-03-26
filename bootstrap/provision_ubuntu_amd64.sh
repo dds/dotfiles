@@ -1,5 +1,6 @@
 #!/bin/sh
 USER=${USER:-vagrant}
+SRCDIR=${SRCDIR:-$(dirname "`pwd`")}  # parent directory should be root
 TARGET=${TARGET:-$(getent passwd "$USER" | cut -d: -f6)}
 
 ### Set environment variables
@@ -57,4 +58,4 @@ gem install rake
 systemctl restart gdm3
 
 ### Install dotfiles
-sudo -u $USER rake -f/dotfiles/Rakefile install[$TARGET]
+sudo -u "$USER" rake -f "${SRCDIR}/Rakefile" install["$TARGET"]
