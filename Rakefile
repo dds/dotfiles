@@ -2,7 +2,7 @@ require 'rake/clean'
 
 here = File.dirname(__FILE__)
 build = File.join(here, 'build')
-util = File.join(here, 'util')
+tools = File.join(here, 'tools')
 bin = File.join(here, 'bin')
 
 # These directories will be created in the target
@@ -47,11 +47,11 @@ task :build do |t|
   mkdir_p build
 
   mbsyncrc = File.join(build, '.mbsyncrc')
-  genmbsyncrc = File.join(util, 'genmbsyncrc')
+  genmbsyncrc = File.join(tools, 'genmbsyncrc')
   sh %{ #{genmbsyncrc} >| #{mbsyncrc} }
 
   msmtprc = File.join(build, '.msmtprc')
-  genmsmtprc = File.join(util, 'genmsmtprc')
+  genmsmtprc = File.join(tools, 'genmsmtprc')
   sh %{ #{genmsmtprc} >| #{msmtprc} }
 end
 
