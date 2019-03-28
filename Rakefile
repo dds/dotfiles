@@ -2,12 +2,14 @@ require 'rake/clean'
 
 here = File.dirname(__FILE__)
 build = File.join(here, 'build')
-CLEAN.include('build/*')
+util = File.join(here, 'util')
+bin = File.join(here, 'bin')
 
 # These directories will be created in the target
 dirs = FileList[
   '.ssh',
   '.gnupg',
+  '.local/bin',
 ]
 
 # These will each be installed into the target
@@ -23,12 +25,6 @@ symlinks = FileList[
   '.gnupg/gpg.conf',
 ]
 
-# These generated files will be copied into the target
-generated = FileList[
-  'build/.msmtprc',
-  'build/.mbsyncrc'
-]
-
 # Systemd units to enable
 systemd_units = [
   'mbsync.timer',
@@ -37,16 +33,23 @@ systemd_units = [
   'syncthing.service',
 ]
 
+# These generated files will be copied into the target
+generated = FileList[
+  'build/.msmtprc',
+  'build/.mbsyncrc'
+]
+CLEAN.include(generated)
+
 
 task :build do |t|
   mkdir_p build
 
   mbsyncrc = File.join(build, '.mbsyncrc')
-  genmbsyncrc = File.join(here, 'bin/genmbsyncrc')
+  genmbsyncrc = File.join(util, 'genmbsyncrc')
   sh %{ #{genmbsyncrc} >| #{mbsyncrc} }
 
   msmtprc = File.join(build, '.msmtprc')
-  genmsmtprc = File.join(here, 'bin/genmsmtprc')
+  genmsmtprc = File.join(util, 'genmsmtprc')
   sh %{ #{genmsmtprc} >| #{msmtprc} }
 end
 
@@ -89,6 +92,11 @@ task :install, [:prefix] do |t, args|
   local_autostart_dir = File.join(here, autostart_dir)
   Dir.glob(File.join(local_autostart_dir, '*')).each do |f|
     to = File.join(prefix_autostart_dir, File.basename(f))
+    ln_sf(f, to)
+  end
+
+  Dir.glob(File.join(bin, '*')).each do |f|
+    to = File.join(args.prefix, '.local/bin')
     ln_sf(f, to)
   end
 

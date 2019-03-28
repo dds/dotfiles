@@ -1,0 +1,9 @@
+#!/bin/sh
+[ -z "$GPG_KEY" ] && echo "Must set \$GPG_KEY environment variable" && exit 1
+pkill -9 '(ssh-agent|gpg-agent)'
+for keystub in $(gpg --with-keygrip --list-secret-keys $GPG_KEY | grep Keygrip | awk '{print $3}'); do
+    keyfile="${GNUPG_HOME:-$HOME/.gnupg}/private-keys-v1.d/$keystub.key"
+    [ -w "$keyfile" ] && rm -f "$keyfile"
+done
+gpg --card-status 
+gpgconf --launch gpg-agent 

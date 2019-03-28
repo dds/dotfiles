@@ -1,5 +1,13 @@
 #!/usr/bin/env python3
-"""Generate mbsync and msmtp configs for all gmail IMAP accounts in keyring."""
+"""Generate configs for mail tools from Gmail accounts.
+
+Reads account data from system keyring Gmail IMAP accounts.
+Produces configuration for tools:
+  - mbsync
+  - msmtp
+"""
+
+import argparse
 import os
 import sys
 from typing import Iterable
@@ -31,20 +39,33 @@ def getAccounts(collection: secretstorage.collection.Collection) -> Iterable:
             yield Account(a.get('username'), a.get('service'))
 
 
-def generate(template: jinja2.Template):
+def generate(template: jinja2.Template) -> str:
     c = keyring.get_keyring().get_preferred_collection()
-    print(template.render(accounts=list(getAccounts(c))))
+    return template.render(accounts=list(getAccounts(c)))
 
 
-if __name__ == '__main__':
-    prog = os.path.basename(sys.argv[0])
+def main():
+    parser = argparse.ArgumentParser(
+        description='Generate config for mail tools from Gmail accounts')
+    parser.add_argument(
+        '--output', default=sys.stdout, type=argparse.FileType('w'),
+        help='the file where the config should be written')
+    args = parser.parse_args()
     env = jinja2.Environment(
         loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
         trim_blocks=True,
         lstrip_blocks=True)
-    if prog == "genmbsyncrc":
-        generate(template=env.get_template('mbsyncrc.j2'))
-    elif prog == "genmsmtprc":
-        generate(template=env.get_template('msmtprc.j2'))
-    else:
-        raise RuntimeError("$0=%s; don't know what to do" % prog)
+
+    templates = {
+        'genmbsyncrc': 'mbsyncrc.j2',
+        'genmsmtprc': 'msmtprc.j2',
+    }
+    template = templates.get(parser.prog, None)
+    if not template:
+        raise RuntimeError("$0=%s; don't know how to do that" % parser.prog)
+
+    args.output.write(generate(template=env.get_template(template)))
+
+
+if __name__ == '__main__':
+    main()
