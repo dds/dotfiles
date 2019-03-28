@@ -1,6 +1,5 @@
 #!/bin/sh
 export EDITOR="emacsclient -n"
-export ALTERNATE_EDITOR=vi
 export EMACS_SERVER_FILE=$HOME/.emacs.d/server/server
 export GTK_IM_MODULE="ibus"
 export XMODIFIERS="@im=ibus"

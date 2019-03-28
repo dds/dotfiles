@@ -10,6 +10,7 @@ dirs = FileList[
   '.ssh',
   '.gnupg',
   '.local/bin',
+  '.local/share/applications',
 ]
 
 # These will each be installed into the target
@@ -23,6 +24,7 @@ symlinks = FileList[
   '.gitconfig',
   '.gnupg/gpg-agent.conf',
   '.gnupg/gpg.conf',
+  '.local/share/applications/org-protocol.desktop',
 ]
 
 # Systemd units to enable
@@ -107,5 +109,6 @@ task :install, [:prefix] do |t, args|
   systemd_units.each do |f|
     sh %{ systemctl --user enable #{f} || true }
   end
-end
 
+  sh %{ update-desktop-database #{args.prefix}/.local/share/applications }
+end
