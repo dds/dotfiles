@@ -76,7 +76,7 @@ task :install, [:prefix] do |t, args|
     from = File.join(here, f)
     to = File.join(args.prefix, f)
     rm_f(to)
-    ln_sf(from, to)
+    File.exists? from and ln_sf(from, to)
   end
 
   systemd_dir = '.config/systemd/user'
