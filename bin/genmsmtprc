@@ -31,7 +31,7 @@ def getAccounts(collection: secretstorage.collection.Collection) -> Iterable:
             yield Account(a.get('username'), a.get('service'))
 
 
-def generate(template):
+def generate(template: jinja2.Template):
     c = keyring.get_keyring().get_preferred_collection()
     print(template.render(accounts=list(getAccounts(c))))
 
@@ -47,4 +47,4 @@ if __name__ == '__main__':
     elif prog == "genmsmtprc":
         generate(template=env.get_template('msmtprc.j2'))
     else:
-        raise RuntimeError("$0=%s; don't know what to do" % sys.argv[0])
+        raise RuntimeError("$0=%s; don't know what to do" % prog)
