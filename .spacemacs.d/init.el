@@ -407,6 +407,14 @@ you should place your code here."
      js2-mode-show-parse-errors nil
      js2-mode-show-strict-warnings nil
      ))
+  (use-package hideshow
+    :config
+    (add-to-list 'hs-special-modes-alist
+                 `(ruby-mode
+                   ,(rx (or "def" "do" "{" "[")) ; Block start
+                   ,(rx (or "}" "]" "end")) ; Block end
+                   ,(rx (or "#" "=begin")) ; Comment start
+                   ruby-forward-sexp nil)))
   ;; (use-package auto-virtualenv
   ;;   ;; :hook (python-mode . auto-virtualenv-set-virtualenv))
   ;; (server-mode t)
