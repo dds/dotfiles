@@ -16,6 +16,8 @@ import jinja2
 import keyring
 import secretstorage
 
+KEYRING_BACKEND = keyring.backends.SecretService.Keyring
+
 
 class Account(object):
     def __init__(self, user, host):
@@ -68,4 +70,5 @@ def main():
 
 
 if __name__ == '__main__':
+    keyring.set_keyring(KEYRING_BACKEND())
     main()
