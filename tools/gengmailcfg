@@ -35,14 +35,16 @@ class Account(object):
 
 
 def getAccounts(collection: secretstorage.collection.Collection) -> Iterable:
+    accts = []
     for i in collection.search_items({'service': 'imap.gmail.com'}):
         a = i.get_attributes()
         if '@' in a.get('username', ''):
-            yield Account(a.get('username'), a.get('service'))
+            accts.append(Account(a.get('username'), a.get('service')))
+    return accts
 
 
-def render(accountsList: Iterable, template: jinja2.Template) -> str:
-    return template.render(accounts=list(getAccounts(accountsList)))
+def render(accountsList: list, template: jinja2.Template) -> str:
+    return template.render(accounts=accountsList)
 
 
 def getCollection():
