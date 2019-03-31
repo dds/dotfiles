@@ -120,4 +120,4 @@
     :config
     (setq send-mail-function 'sendmail-send-it)
     (setq mail-specify-envelope-from t)
-    (setq sendmail-program "~/.local/bin/msmtpq")))
+    (setq sendmail-program "msmtpq")))
