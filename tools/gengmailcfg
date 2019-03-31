@@ -41,9 +41,21 @@ def getAccounts(collection: secretstorage.collection.Collection) -> Iterable:
             yield Account(a.get('username'), a.get('service'))
 
 
-def generate(template: jinja2.Template) -> str:
-    c = keyring.get_keyring().get_preferred_collection()
-    return template.render(accounts=list(getAccounts(c)))
+def render(accountsList: Iterable, template: jinja2.Template) -> str:
+    return template.render(accounts=list(getAccounts(accountsList)))
+
+
+def getCollection():
+    try:
+        c = keyring.get_keyring().get_preferred_collection()
+    except AttributeError:
+        print("Woah buddy, this shouldn't happen if you're using the correct "
+              "backend ({})".format(KEYRING_BACKEND))
+        raise
+    except keyring.errors.InitError as e:
+        print("Could not load keyring {}: {}".format(KEYRING_BACKEND, e))
+    else:
+        return c
 
 
 def main():
@@ -66,7 +78,9 @@ def main():
     if not template:
         raise RuntimeError("$0=%s; don't know how to do that" % parser.prog)
 
-    args.output.write(generate(template=env.get_template(template)))
+    args.output.write(render(
+        accountsList=getAccounts(getCollection()),
+        template=env.get_template(template)))
 
 
 if __name__ == '__main__':
