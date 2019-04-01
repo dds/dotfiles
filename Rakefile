@@ -22,6 +22,7 @@ symlinks = FileList[
   '.screenrc',
   '.spacemacs.d',
   '.gitconfig',
+  '.Xresources',
   '.gnupg/gpg-agent.conf',
   '.gnupg/gpg.conf',
   '.local/share/applications/org-protocol.desktop',
