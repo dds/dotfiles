@@ -92,9 +92,7 @@ values."
      latex
      json
      ipython-notebook
-     (go :variables go-use-golangci-lint t
-         go-backend 'lsp
-         go-use-gocheck-for-testing t)
+     go
      emacs-lisp
      asciidoc
      c-c++
@@ -420,9 +418,6 @@ you should place your code here."
                    ,(rx (or "}" "]" "end")) ; Block end
                    ,(rx (or "#" "=begin")) ; Comment start
                    ruby-forward-sexp nil)))
-  ;; (use-package auto-virtualenv
-  ;;   ;; :hook (python-mode . auto-virtualenv-set-virtualenv))
-  ;; (server-mode t)
   )
 
 ;; https://github.com/jorgenschaefer/pyvenv/issues/51#issuecomment-474785730
