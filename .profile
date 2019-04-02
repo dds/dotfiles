@@ -1,6 +1,5 @@
-#!/bin/sh
-export EDITOR="emacsclient -n"
-export EMACS_SERVER_FILE=$HOME/.emacs.d/server/server
+#!/bin/bash
+export EDITOR="emacsclient"
 export GTK_IM_MODULE="ibus"
 export XMODIFIERS="@im=ibus"
 export QT_IM_MODULE="ibus"
