@@ -32,13 +32,11 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(systemd
-     ansible
      (sql :variables
           sql-capitalize-keywords t
           sql-capitalize-keywords-disable-interactive t
           sql-capitalize-keywords-blacklist '("name")
           )
-     elfeed
      emoji
      html
      backup
