@@ -31,7 +31,8 @@ values."
    dotspacemacs-configuration-layer-path '("~/.spacemacs.d/layers/")
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
-   '(systemd
+   '(dds
+     systemd
      (sql :variables
           sql-capitalize-keywords t
           sql-capitalize-keywords-disable-interactive t
@@ -107,7 +108,6 @@ values."
      typescript
      yaml
      dash
-     dds
      php
      )
    ;; List of additional packages that will be installed without being
