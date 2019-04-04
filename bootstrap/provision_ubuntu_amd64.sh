@@ -41,7 +41,8 @@ apt-get install -y --ignore-missing \
   x11-xkb-utils \
   workrave \
   yubikey-personalization-gui \
-  python3-yubikey-manager
+  python3-yubikey-manager \
+  libnss-resolve
 
 if ! dpkg-query -s keybase >/dev/null; then
     curl -sLS https://prerelease.keybase.io/keybase_amd64.deb -o /tmp/keybase_amd64.deb
