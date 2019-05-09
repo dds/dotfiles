@@ -783,7 +783,13 @@ esac
 unset -f _polyglot_is_ssh _polyglot_is_busybox _polyglot_is_dtksh \
   _polyglot_is_pdksh
 
-alias ls='ls --color=auto'
+
+if [ "Darwin" == "$(uname)" ]; then
+    alias ls='gls --color=auto'
+else
+    alias ls='ls --color=auto'
+    alias skype='skypeforlinux'
+fi
 alias L='ls -Flb'
 alias LL='ls -FLlb'
 alias a='alias'
@@ -797,13 +803,14 @@ alias la='ls -Flab'
 alias ll='ls -Flb'
 alias lh='ls -Flh'
 alias r='cd / && screen -RD'
-alias skype='skypeforlinux'
 alias sudo='sudo -E'
 alias tree='tree -C'
 alias treel='tree -phugD'
 alias t='tree'
 alias tl='treel'
-alias zm='pager'
-alias zp='pager'
 alias ot='popd'
 alias to='pushd'
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
