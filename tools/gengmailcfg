@@ -10,13 +10,10 @@ Produces configuration for tools:
 import argparse
 import os
 import sys
-from typing import Iterable
+from typing import IO, Iterable
 
 import jinja2
 import keyring
-import secretstorage
-
-KEYRING_BACKEND = keyring.backends.SecretService.Keyring
 
 
 class Account(object):
@@ -34,22 +31,23 @@ class Account(object):
         ]
 
 
-def getAccounts(collection: secretstorage.collection.Collection) -> Iterable:
-    accts = []
-    for i in collection.search_items({'service': 'imap.gmail.com'}):
-        a = i.get_attributes()
-        if '@' in a.get('username', ''):
-            accts.append(Account(a.get('username'), a.get('service')))
-    return accts
+def getAccounts(accountsFile: IO, keyring: keyring.core.backend.KeyringBackend) -> Iterable:
+    accounts = []
+    for line in accountsFile.readlines():
+        account = line.strip()
+        c = keyring.get_credential('gmail.com', account)
+        if c:
+            accounts += [Account(c.username, 'gmail.com')]
+    return accounts
 
 
 def render(accountsList: list, template: jinja2.Template) -> str:
     return template.render(accounts=accountsList)
 
 
-def getCollection():
+def getKeyring():
     try:
-        c = keyring.get_keyring().get_preferred_collection()
+        k = keyring.get_keyring()
     except AttributeError:
         print("Woah buddy, this shouldn't happen if you're using the correct "
               "backend ({})".format(KEYRING_BACKEND))
@@ -57,7 +55,7 @@ def getCollection():
     except keyring.errors.InitError as e:
         print("Could not load keyring {}: {}".format(KEYRING_BACKEND, e))
     else:
-        return c
+        return k
 
 
 def main():
@@ -66,6 +64,9 @@ def main():
     parser.add_argument(
         '--output', default=sys.stdout, type=argparse.FileType('w'),
         help='the file where the config should be written')
+    parser.add_argument(
+        '--accounts', default=sys.stdin, type=argparse.FileType('r'),
+        help='the file where the accounts will be read, one per line')
     args = parser.parse_args()
     env = jinja2.Environment(
         loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
@@ -80,11 +81,12 @@ def main():
     if not template:
         raise RuntimeError("$0=%s; don't know how to do that" % parser.prog)
 
-    args.output.write(render(
-        accountsList=getAccounts(getCollection()),
-        template=env.get_template(template)))
+    accountsList = getAccounts(args.accounts, getKeyring())
+    if not accountsList:
+        sys.exit(-1)
+    args.output.write(render(accountsList=accountsList,
+                             template=env.get_template(template)))
 
 
 if __name__ == '__main__':
-    keyring.set_keyring(KEYRING_BACKEND())
     main()

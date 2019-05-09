@@ -2,10 +2,11 @@ defaults
 logfile ~/.msmtp.log
 tls on
 tls_starttls off
-tls_trust_file /etc/ssl/certs/ca-certificates.crt
+tls_fingerprint 1F:5C:3C:FB:CB:5D:F6:45:C7:96:F3:F7:A8:88:60:7A:D3:D8:FF:03:25:64:E1:01:0C:E9:CA:29:AA:48:8D:75
 auth on
 port 465
 host smtp.gmail.com
+
 {% for account in accounts %}
 
 account {{ account.slug }}
@@ -14,7 +15,7 @@ passwordeval keyring get {{ account.host }} {{ account.user }}
 from {{ account.user }}
 {% endfor %}
 
-account acm :gmail
+account default :gmail
 from davidsmith@acm.org
 
 account dds :bosabosa

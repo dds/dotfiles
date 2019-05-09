@@ -49,11 +49,12 @@ task :build do |t|
 
   mbsyncrc = File.join(build, '.mbsyncrc')
   genmbsyncrc = File.join(tools, 'genmbsyncrc')
-  sh %{ #{genmbsyncrc} >| #{mbsyncrc} }
+  accounts = File.join(here, 'private/gmailaccounts')
+  sh %{ #{genmbsyncrc} < #{accounts} >| #{mbsyncrc} }
 
   msmtprc = File.join(build, '.msmtprc')
   genmsmtprc = File.join(tools, 'genmsmtprc')
-  sh %{ #{genmsmtprc} >| #{msmtprc} }
+  sh %{ #{genmsmtprc} < #{accounts} >| #{msmtprc} }
 end
 
 

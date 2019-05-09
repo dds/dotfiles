@@ -1,7 +1,7 @@
 {% for account in accounts %}
 ### {{ account.user }}
 IMAPStore {{ account.slug }}-imap
-Host {{ account.host }}
+Host imap.gmail.com
 User {{ account.user }}
 PassCmd "keyring get {{ account.host }} {{ account.user }}"
 Port 993
