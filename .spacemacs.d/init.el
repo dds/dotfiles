@@ -31,7 +31,8 @@ values."
    dotspacemacs-configuration-layer-path '("~/.spacemacs.d/layers/")
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
-   '(dds
+   '(ansible
+     dds
      systemd
      (sql :variables
           sql-capitalize-keywords t
@@ -73,7 +74,9 @@ values."
      (shell :variables
              shell-default-height 30
              shell-default-position 'bottom
-             shell-default-shell 'multiterm)
+             shell-default-shell 'multiterm
+             multi-term-program "/usr/local/bin/bash"
+             )
      spell-checking
      syntax-checking
      version-control
@@ -81,9 +84,10 @@ values."
            mu4e-installation-path "~/src/mu/mu4e")
      (python :variables
              python-test-runner 'pytest
-             python-backend 'lsp
              python-sort-imports-on-save t
+             python-backend 'anaconda
              )
+     dap
      lsp
      java
      javascript
@@ -109,6 +113,7 @@ values."
      yaml
      dash
      php
+     kotlin
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -116,8 +121,7 @@ values."
    ;; configuration in `dotspacemacs/user-config'.
    dotspacemacs-additional-packages
    '(
-     flycheck-kotlin
-     kotlin-mode
+     flycheck-pyflakes
      )
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -371,7 +375,7 @@ before packages are loaded. If you are unsure, you should try in setting them in
 `dotspacemacs/user-config' first."
   (setq
    user-full-name "David D. Smith"
-   user-mail-address "davidsmith@acm.org"
+   user-mail-address "dsmith@nerdwallet.com"
    powerline-scale 1.1
    )
   )
@@ -397,15 +401,24 @@ you should place your code here."
     (setq python-shell-process-environment '("PAGER=cat")
           python-shell-prompt-detect-failure-warning nil
           )
-    (add-hook 'python-mode-hook 'captain-kark//pyvenv-autoload)
+    (add-hook 'python-mode-hook 'dds//pyvenv-autoload)
+    (add-to-list 'python-shell-extra-pythonpaths "~/code/py2")
     )
+  (use-package flycheck-pyflakes
+    :config
+    (add-to-list 'flycheck-disabled-checkers 'python-flake8)
+    (add-to-list 'flycheck-disabled-checkers 'python-pylint))
   (use-package treemacs
+    :init
+    (setq-default
+     treemacs-git-mode 'simple
+     )
     :config
     (setq
      treemacs-show-hidden-files nil
      )
-    (treemacs-git-mode 'simple)
     (add-to-list 'treemacs-pre-file-insert-predicates #'treemacs-is-file-git-ignored?)
+    (treemacs-git-mode 'simple)
     )
   (use-package js2-mode
     :config
@@ -421,18 +434,32 @@ you should place your code here."
                    ,(rx (or "}" "]" "end")) ; Block end
                    ,(rx (or "#" "=begin")) ; Comment start
                    ruby-forward-sexp nil)))
+  (defun pyenv-venv-wrapper-act (&optional ARG PRED)
+    (setenv "VIRTUAL_ENV" (shell-command-to-string "_pyenv_virtualenv_hook; echo -n $VIRTUAL_ENV")))
+  (advice-add 'pyenv-mode-set :after 'pyenv-venv-wrapper-act)
+  (defun pyenv-venv-wrapper-deact (&optional ARG PRED)
+    (setenv "VIRTUAL_ENV"))
+  (advice-add 'pyenv-mode-unset :after 'pyenv-venv-wrapper-deact)
+  (advice-add 'spacemacs/python-start-or-switch-repl :around
+              (lambda (f &rest args)
+                (projectile-with-default-dir (projectile-ensure-project (projectile-project-root))
+                  (call-interactively f))))
+  (server-force-delete)
+  (server-start)
   )
 
 ;; https://github.com/jorgenschaefer/pyvenv/issues/51#issuecomment-474785730
-(defun captain-kark//pyvenv-autoload ()
-  "Automatically activates pyvenv version if .venv directory exists."
+(defun dds//pyvenv-autoload ()
+  "Automatically activates pyvenv version if build/venv/* directory exists."
   (f-traverse-upwards
    (lambda (path)
-     (let ((venv-path (f-expand ".venv" path)))
-       (if (f-exists? venv-path)
+     (let ((venv-path (car (f-glob (f-join (f-expand "build/venv" path) "*")))))
+       (if (and venv-path (f-exists? venv-path))
            (progn
-             (pyvenv-workon venv-path))
-         t)))))
+             (pyvenv-activate venv-path)
+             t)
+         nil)))))
+
 
 (defun dotspacemacs/emacs-custom-settings ()
   "Emacs custom settings.
@@ -449,10 +476,10 @@ This function is called at the very end of Spacemacs initialization."
     ("http://cachestocaches.com/feed/" "https://mjg59.dreamwidth.org/data/atom" "https://mjg59.dreamwidth.org/")))
  '(org-agenda-files
    (quote
-    ("/home/dds/plan/business.org" "/home/dds/plan/events.org" "/home/dds/plan/planner.org" "/home/dds/plan/routines.org")))
+    ("/Users/dsmith/plan/business.org" "/Users/dsmith/plan/events.org" "/Users/dsmith/plan/planner.org" "/Users/dsmith/plan/routines.org")))
  '(package-selected-packages
    (quote
-    (sqlup-mode sql-indent flycheck-golangci-lint systemd jinja2-mode company-ansible ansible-doc ansible rjsx-mode yasnippet-snippets yaml-mode writeroom-mode visual-fill-column wgrep vagrant-tramp vagrant treemacs-projectile treemacs-evil treemacs pfuture toml-mode tide typescript-mode symon string-inflection spaceline-all-the-icons smex seeing-is-believing rvm ruby-tools ruby-test-mode ruby-refactor ruby-hash-syntax rubocop rspec-mode robe realgud test-simple loc-changes load-relative rbenv racer protobuf-mode projectile-rails rake inflections pony-mode plantuml-mode pdf-tools password-generator ox-hugo ox-gfm overseer org-journal org-brain ob-ipython nameless mvn minitest meghanada maven-test-mode magit-svn livid-mode json-navigator hierarchy js2-refactor multiple-cursors js-doc ivy-yasnippet ivy-xref ivy-rtags ivy-purpose window-purpose imenu-list ivy-hydra insert-shebang groovy-mode groovy-imports gradle-mode google-c-style godoctor go-tag go-rename go-impl go-guru go-gen-test go-fill-struct go-eldoc gmail-message-mode ham-mode html-to-markdown gitignore-templates github-search github-clone gist gh marshal logito pcache forge closql emacsql-sqlite emacsql flyspell-correct-ivy flymd flycheck-rust flycheck-rtags flycheck-bashate fish-mode feature-mode evil-org evil-lion evil-goggles evil-cleverparens paredit ensime sbt-mode scala-mode ein skewer-mode websocket js2-mode editorconfig edit-server doom-modeline eldoc-eval shrink-path all-the-icons memoize dockerfile-mode docker json-mode tablist docker-tramp json-snatcher json-reformat disaster csv-mode counsel-projectile company-terraform terraform-mode hcl-mode company-tern tern company-shell company-rtags rtags company-plsense company-go go-mode company-emacs-eclim eclim company-c-headers company-auctex clang-format chruby centered-cursor-mode cargo rust-mode bundler inf-ruby browse-at-remote auto-complete-rst font-lock+ dotenv-mode graphql-mode phpunit phpcbf php-extras php-auto-yasnippets drupal-mode company-php ac-php-core xcscope php-mode zeal-at-point counsel-dash helm-dash elfeed-web elfeed-org elfeed-goodies ace-jump-mode noflet elfeed flycheck-kotlin kotlin-mode ibuffer-projectile ghub auctex adoc-mode markup-faces yapfify pytest pyenv-mode py-isort pippel pipenv pyvenv pip-requirements live-py-mode importmagic epc ctable concurrent deferred cython-mode company-anaconda anaconda-mode pythonic emojify emoji-cheat-sheet-plus company-emoji web-mode web-beautify tagedit slim-mode scss-mode sass-mode pug-mode prettier-js less-css-mode impatient-mode simple-httpd helm-css-scss haml-mode emmet-mode counsel-css company-web web-completion-data add-node-modules-path mu4e-query-fragments org-super-agenda mu4e-maildirs-extension mu4e-alert ht xterm-color unfill smeargle shell-pop orgit org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-mime org-download mwim multi-term mmm-mode markdown-toc markdown-mode magit-gitflow magit-popup helm-gitignore helm-company helm-c-yasnippet gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md fuzzy flyspell-correct-helm flyspell-correct flycheck-pos-tip pos-tip flycheck evil-magit magit transient git-commit with-editor eshell-z eshell-prompt-extras esh-help diff-hl company-statistics company auto-yasnippet auto-dictionary ac-ispell auto-complete ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist highlight evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async yasnippet htmlize))))
+    (evil-collection flycheck-pyflakes sqlup-mode sql-indent flycheck-golangci-lint systemd jinja2-mode company-ansible ansible-doc ansible rjsx-mode yasnippet-snippets yaml-mode writeroom-mode visual-fill-column wgrep vagrant-tramp vagrant treemacs-projectile treemacs-evil treemacs pfuture toml-mode tide typescript-mode symon string-inflection spaceline-all-the-icons smex seeing-is-believing rvm ruby-tools ruby-test-mode ruby-refactor ruby-hash-syntax rubocop rspec-mode robe realgud test-simple loc-changes load-relative rbenv racer protobuf-mode projectile-rails rake inflections pony-mode plantuml-mode pdf-tools password-generator ox-hugo ox-gfm overseer org-journal org-brain ob-ipython nameless mvn minitest meghanada maven-test-mode magit-svn livid-mode json-navigator hierarchy js2-refactor multiple-cursors js-doc ivy-yasnippet ivy-xref ivy-rtags ivy-purpose window-purpose imenu-list ivy-hydra insert-shebang groovy-mode groovy-imports gradle-mode google-c-style godoctor go-tag go-rename go-impl go-guru go-gen-test go-fill-struct go-eldoc gmail-message-mode ham-mode html-to-markdown gitignore-templates github-search github-clone gist gh marshal logito pcache forge closql emacsql-sqlite emacsql flyspell-correct-ivy flymd flycheck-rust flycheck-rtags flycheck-bashate fish-mode feature-mode evil-org evil-lion evil-goggles evil-cleverparens paredit ensime sbt-mode scala-mode ein skewer-mode websocket js2-mode editorconfig edit-server doom-modeline eldoc-eval shrink-path all-the-icons memoize dockerfile-mode docker json-mode tablist docker-tramp json-snatcher json-reformat disaster csv-mode counsel-projectile company-terraform terraform-mode hcl-mode company-tern tern company-shell company-rtags rtags company-plsense company-go go-mode company-emacs-eclim eclim company-c-headers company-auctex clang-format chruby centered-cursor-mode cargo rust-mode bundler inf-ruby browse-at-remote auto-complete-rst font-lock+ dotenv-mode graphql-mode phpunit phpcbf php-extras php-auto-yasnippets drupal-mode company-php ac-php-core xcscope php-mode zeal-at-point counsel-dash helm-dash elfeed-web elfeed-org elfeed-goodies ace-jump-mode noflet elfeed flycheck-kotlin kotlin-mode ibuffer-projectile ghub auctex adoc-mode markup-faces yapfify pytest pyenv-mode py-isort pippel pipenv pyvenv pip-requirements live-py-mode importmagic epc ctable concurrent deferred cython-mode company-anaconda anaconda-mode pythonic emojify emoji-cheat-sheet-plus company-emoji web-mode web-beautify tagedit slim-mode scss-mode sass-mode pug-mode prettier-js less-css-mode impatient-mode simple-httpd helm-css-scss haml-mode emmet-mode counsel-css company-web web-completion-data add-node-modules-path mu4e-query-fragments org-super-agenda mu4e-maildirs-extension mu4e-alert ht xterm-color unfill smeargle shell-pop orgit org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-mime org-download mwim multi-term mmm-mode markdown-toc markdown-mode magit-gitflow magit-popup helm-gitignore helm-company helm-c-yasnippet gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md fuzzy flyspell-correct-helm flyspell-correct flycheck-pos-tip pos-tip flycheck evil-magit magit transient git-commit with-editor eshell-z eshell-prompt-extras esh-help diff-hl company-statistics company auto-yasnippet auto-dictionary ac-ispell auto-complete ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist highlight evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async yasnippet htmlize))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

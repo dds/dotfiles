@@ -9,6 +9,9 @@
   (use-package org
     :hook ((org-mode . turn-on-visual-line-mode)
            (org-mode . turn-on-flyspell))
+    :bind (
+           :map org-agenda-mode-map ("!" . dds-org/org-agenda-toggle-deadlines-and-habits)
+           )
     :config
     (setq
      org-directory '("~/plan/")
