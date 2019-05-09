@@ -4,9 +4,13 @@ export GTK_IM_MODULE="ibus"
 export XMODIFIERS="@im=ibus"
 export QT_IM_MODULE="ibus"
 export GOPATH=~/go
-export GOHOME=/usr/local/go
+if [ "Darwin" == "$(uname)" ]; then
+    export GOROOT="`brew --prefix go@1.11`/libexec"
+else
+    export GOROOT=/usr/local/go
+fi
 export PASSWORD_STORE_DIR=~/Sync/Private/PassStore
-export PATH=~/util:~/src/mu/mu:~/.cargo/bin:$GOPATH/bin:$GOHOME/bin:~/.local/bin:$PATH
+export PATH=~/src/mu/mu:~/.cargo/bin:$GOPATH/bin:$GOROOT/bin:~/.local/bin:/usr/local/opt/node@6/bin:$PATH
 export GPG_KEY=0x22B8564124FA9655
 export PGP_KEY=$GPG_KEY
 
