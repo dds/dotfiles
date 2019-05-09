@@ -18,18 +18,20 @@ _is_ssh() {
     [ -n "${SSH_CONNECTION-}${SSH_CLIENT-}${SSH_TTY-}" ]
 }
 
-if ( ! _is_ssh && which gpgconf && which gpg-agent ) >/dev/null; then
-   declare SSH_AUTH_SOCK
-   SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
-   if [ $? -eq 0 ]; then
-       export SSH_AUTH_SOCK
-       gpgconf --launch gpg-agent
-   fi
-fi
-
+# if ( ! _is_ssh && which gpgconf && which gpg-agent ) >/dev/null; then
+#     declare SSH_AUTH_SOCK
+#     SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+#     if [ $? -eq 0 ]; then
+#         export SSH_AUTH_SOCK
+#         gpgconf --launch gpg-agent
+#     fi
+# fi
 
 if echo "$0" | grep -q bash >/dev/null; then
     if [ -r ~/.bashrc ]; then
         . ~/.bashrc
     fi
 fi
+
+export SDKMAN_DIR="$HOME/.sdkman"
+[[ -s "$SDKMAN_DIR/bin/sdkman-init.sh" ]] && source "/Users/dsmith/.sdkman/bin/sdkman-init.sh"
