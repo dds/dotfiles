@@ -784,7 +784,7 @@ unset -f _polyglot_is_ssh _polyglot_is_busybox _polyglot_is_dtksh \
   _polyglot_is_pdksh
 
 
-if [ "Darwin" == "$(uname)" ]; then
+if [ "Darwin" -eq "$(uname)" ]; then
     alias ls='gls --color=auto'
 else
     alias ls='ls --color=auto'

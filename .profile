@@ -4,7 +4,7 @@ export GTK_IM_MODULE="ibus"
 export XMODIFIERS="@im=ibus"
 export QT_IM_MODULE="ibus"
 export GOPATH=~/go
-if [ "Darwin" == "$(uname)" ]; then
+if [ "Darwin" -eq "$(uname)" ]; then
     export GOROOT="`brew --prefix go@1.11`/libexec"
 else
     export GOROOT=/usr/local/go
