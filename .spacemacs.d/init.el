@@ -122,6 +122,7 @@ values."
    dotspacemacs-additional-packages
    '(
      flycheck-pyflakes
+     exec-path-from-shell
      )
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -396,6 +397,8 @@ you should place your code here."
    gofmt-command "goimports"
    )
   (display-time-mode t)
+  (when (memq window-system '(mac ns x))
+    (exec-path-from-shell-initialize))
   (use-package python
     :config
     (setq python-shell-process-environment '("PAGER=cat")

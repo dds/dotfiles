@@ -784,7 +784,14 @@ unset -f _polyglot_is_ssh _polyglot_is_busybox _polyglot_is_dtksh \
   _polyglot_is_pdksh
 
 
-if [ "Darwin" -eq "$(uname)" ]; then
+case "$(uname -s)" in
+    Linux*)     machine=linux;;
+    Darwin*)    machine=mac;;
+    CYGWIN*)    machine=cygwin;;
+    MINGW*)     machine=mingw;;
+    *)          machine="UNKNOWN:${unameOut}"
+esac
+if [ "$machine" = "mac" ]; then
     alias ls='gls --color=auto'
 else
     alias ls='ls --color=auto'
