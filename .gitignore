@@ -5,4 +5,5 @@
 target/
 build/
 private/
+.spacemacs.d/.spacemacs.env
 

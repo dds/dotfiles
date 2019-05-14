@@ -100,7 +100,9 @@ values."
      latex
      json
      ipython-notebook
-     go
+     (go :variables
+         godoc-at-point-function 'godoc-gogetdoc
+         go-tab-width nil)
      emacs-lisp
      asciidoc
      c-c++
@@ -395,6 +397,7 @@ you should place your code here."
    server-use-tcp t
    go-format-before-save t
    gofmt-command "goimports"
+   spacemacs-theme-keyword-italic nil
    )
   (display-time-mode t)
   (when (memq window-system '(mac ns x))
