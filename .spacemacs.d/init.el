@@ -398,6 +398,8 @@ you should place your code here."
    go-format-before-save t
    gofmt-command "goimports"
    spacemacs-theme-keyword-italic nil
+   sentence-end-double-space t
+   colon-double-space t
    )
   (display-time-mode t)
   (when (memq window-system '(mac ns x))

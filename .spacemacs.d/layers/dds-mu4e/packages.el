@@ -129,7 +129,7 @@
 (defun dds-mu4e/post-init-mu4e/config-compose ()
   (with-eval-after-load 'message
     (setq mml-enable-flowed nil
-          message-citation-line-format "On %a, %b %e, %Y at %k:%m UTC, %f wrote:\n"
+          message-citation-line-format "On %a, %b %e, %Y at %k:%M %z, %f wrote:\n"
           message-citation-line-function 'message-insert-formatted-citation-line
           message-confirm-send t
           message-fill-column nil
