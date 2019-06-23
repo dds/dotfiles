@@ -25,6 +25,8 @@
      org-log-into-drawer t
      org-pretty-entities t
      org-pretty-entities-include-sub-superscripts nil
+     org-use-sub-superscripts '{}
+     org-export-with-sub-superscripts '{}
      )
     (setq org-todo-keywords
           '((sequence "TODO(t)"
