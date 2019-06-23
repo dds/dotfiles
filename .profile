@@ -23,7 +23,7 @@ export GPG_KEY=0x22B8564124FA9655
 export PGP_KEY=$GPG_KEY
 export SDKMAN_DIR="$HOME/.sdkman"
 
-if test -s "$SDKMAN_DIR/bin/sdkman-init.sh"; then
+if [ -s "$SDKMAN_DIR/bin/sdkman-init.sh" ]; then
     source "$SDKMAN_DIR/bin/sdkman-init.sh"
 fi
 
