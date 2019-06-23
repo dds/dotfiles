@@ -12,7 +12,7 @@ export XMODIFIERS="@im=ibus"
 export QT_IM_MODULE="ibus"
 export GOPATH=~/code/go
 if [ "$machine" = "mac" ]; then
-    GOROOT="`brew --prefix go@1.11`/libexec"
+    GOROOT="`brew --prefix go`/libexec"
 else
     GOROOT=/usr/local/go
 fi
