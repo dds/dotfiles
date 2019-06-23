@@ -31,91 +31,85 @@ values."
    dotspacemacs-configuration-layer-path '("~/.spacemacs.d/layers/")
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
-   '(ansible
+   '(
      dds
-     systemd
-     (sql :variables
-          sql-capitalize-keywords t
-          sql-capitalize-keywords-disable-interactive t
-          sql-capitalize-keywords-blacklist '("name")
-          )
-     emoji
-     html
-     backup
-     ivy
      (auto-completion :disabled-for git)
-     ibuffer
-     better-defaults
-     emacs-lisp
-     git
-     github
-     version-control
-     ruby-on-rails
-     django
-     pdf
-     markdown
-     chrome
-     docker
      (debug :variables
             debug-additional-debuggers
             '("trepan2"
               "trepan3k"
               "ipdb"
               ))
-     vagrant
-     terraform
-     xclipboard
+     (go :variables
+         godoc-at-point-function 'godoc-gogetdoc
+         go-tab-width nil)
+     (mu4e :variables
+           mu4e-installation-path "~/src/mu/mu4e")
      (org :variables
           org-enable-github-support t
           org-enable-org-journal-support t
           org-enable-hugo-support t
-          org-want-todo-bindings t
-          )
-     (shell :variables
-             shell-default-height 30
-             shell-default-position 'bottom
-             shell-default-shell 'multiterm
-             multi-term-program "/bin/bash"
-             )
-     spell-checking
-     syntax-checking
-     version-control
-     (mu4e :variables
-           mu4e-installation-path "~/src/mu/mu4e")
+          org-want-todo-bindings t)
      (python :variables
-             python-test-runner 'pytest
-             python-sort-imports-on-save t
-             python-backend 'anaconda
-             )
+             python-test-runner 'pytest)
+     (shell :variables
+            shell-default-height 30
+            shell-default-position 'bottom
+            shell-default-shell 'multiterm
+            multi-term-program "/usr/local/bin/bash")
+     (sql :variables
+          sql-capitalize-keywords t
+          sql-capitalize-keywords-disable-interactive t
+          sql-capitalize-keywords-blacklist '("name"))
+     asciidoc
+     backup
+     better-defaults
+     c-c++
+     chrome
+     csv
      dap
-     lsp
+     dash
+     django
+     docker
+     emacs-lisp
+     emacs-lisp
+     emoji
+     git
+     github
+     gtags
+     html
+     ibuffer
+     ivy
      java
      javascript
-     perl5
-     protobuf
-     plantuml
+     json
+     kotlin
+     latex
+     lsp
+     markdown
      markdown
      node
+     pdf
+     perl5
+     php
+     plantuml
+     protobuf
      react
-     latex
-     json
-     ipython-notebook
-     (go :variables
-         godoc-at-point-function 'godoc-gogetdoc
-         go-tab-width nil)
-     emacs-lisp
-     asciidoc
-     c-c++
-     csv
      restructuredtext
      ruby
+     ruby-on-rails
      rust
      shell-scripts
+     spell-checking
+     syntax-checking
+     systemd
+     terraform
      typescript
+     vagrant
+     version-control
+     version-control
+     xclipboard
      yaml
-     dash
-     php
-     kotlin
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -292,10 +286,10 @@ values."
    ;; If non nil a progress bar is displayed when spacemacs is loading. This
    ;; may increase the boot time on some systems and emacs builds, set it to
    ;; nil to boost the loading time. (default t)
-   dotspacemacs-loading-progress-bar t
+   dotspacemacs-loading-progress-bar nil
    ;; If non nil the frame is fullscreen when Emacs starts up. (default nil)
    ;; (Emacs 24.4+ only)
-   dotspacemacs-fullscreen-at-startup nil
+   dotspacemacs-fullscreen-at-startup t
    ;; If non nil `spacemacs/toggle-fullscreen' will not use native fullscreen.
    ;; Use to disable fullscreen animations in OSX. (default nil)
    dotspacemacs-fullscreen-use-non-native t
@@ -484,7 +478,7 @@ This function is called at the very end of Spacemacs initialization."
     ("http://cachestocaches.com/feed/" "https://mjg59.dreamwidth.org/data/atom" "https://mjg59.dreamwidth.org/")))
  '(package-selected-packages
    (quote
-    (evil-collection flycheck-pyflakes sqlup-mode sql-indent flycheck-golangci-lint systemd jinja2-mode company-ansible ansible-doc ansible rjsx-mode yasnippet-snippets yaml-mode writeroom-mode visual-fill-column wgrep vagrant-tramp vagrant treemacs-projectile treemacs-evil treemacs pfuture toml-mode tide typescript-mode symon string-inflection spaceline-all-the-icons smex seeing-is-believing rvm ruby-tools ruby-test-mode ruby-refactor ruby-hash-syntax rubocop rspec-mode robe realgud test-simple loc-changes load-relative rbenv racer protobuf-mode projectile-rails rake inflections pony-mode plantuml-mode pdf-tools password-generator ox-hugo ox-gfm overseer org-journal org-brain ob-ipython nameless mvn minitest meghanada maven-test-mode magit-svn livid-mode json-navigator hierarchy js2-refactor multiple-cursors js-doc ivy-yasnippet ivy-xref ivy-rtags ivy-purpose window-purpose imenu-list ivy-hydra insert-shebang groovy-mode groovy-imports gradle-mode google-c-style godoctor go-tag go-rename go-impl go-guru go-gen-test go-fill-struct go-eldoc gmail-message-mode ham-mode html-to-markdown gitignore-templates github-search github-clone gist gh marshal logito pcache forge closql emacsql-sqlite emacsql flyspell-correct-ivy flymd flycheck-rust flycheck-rtags flycheck-bashate fish-mode feature-mode evil-org evil-lion evil-goggles evil-cleverparens paredit ensime sbt-mode scala-mode ein skewer-mode websocket js2-mode editorconfig edit-server doom-modeline eldoc-eval shrink-path all-the-icons memoize dockerfile-mode docker json-mode tablist docker-tramp json-snatcher json-reformat disaster csv-mode counsel-projectile company-terraform terraform-mode hcl-mode company-tern tern company-shell company-rtags rtags company-plsense company-go go-mode company-emacs-eclim eclim company-c-headers company-auctex clang-format chruby centered-cursor-mode cargo rust-mode bundler inf-ruby browse-at-remote auto-complete-rst font-lock+ dotenv-mode graphql-mode phpunit phpcbf php-extras php-auto-yasnippets drupal-mode company-php ac-php-core xcscope php-mode zeal-at-point counsel-dash helm-dash elfeed-web elfeed-org elfeed-goodies ace-jump-mode noflet elfeed flycheck-kotlin kotlin-mode ibuffer-projectile ghub auctex adoc-mode markup-faces yapfify pytest pyenv-mode py-isort pippel pipenv pyvenv pip-requirements live-py-mode importmagic epc ctable concurrent deferred cython-mode company-anaconda anaconda-mode pythonic emojify emoji-cheat-sheet-plus company-emoji web-mode web-beautify tagedit slim-mode scss-mode sass-mode pug-mode prettier-js less-css-mode impatient-mode simple-httpd helm-css-scss haml-mode emmet-mode counsel-css company-web web-completion-data add-node-modules-path mu4e-query-fragments org-super-agenda mu4e-maildirs-extension mu4e-alert ht xterm-color unfill smeargle shell-pop orgit org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-mime org-download mwim multi-term mmm-mode markdown-toc markdown-mode magit-gitflow magit-popup helm-gitignore helm-company helm-c-yasnippet gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md fuzzy flyspell-correct-helm flyspell-correct flycheck-pos-tip pos-tip flycheck evil-magit magit transient git-commit with-editor eshell-z eshell-prompt-extras esh-help diff-hl company-statistics company auto-yasnippet auto-dictionary ac-ispell auto-complete ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist highlight evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async yasnippet htmlize))))
+    (ggtags counsel-gtags evil-collection flycheck-pyflakes sqlup-mode sql-indent flycheck-golangci-lint systemd jinja2-mode company-ansible ansible-doc ansible rjsx-mode yasnippet-snippets yaml-mode writeroom-mode visual-fill-column wgrep vagrant-tramp vagrant treemacs-projectile treemacs-evil treemacs pfuture toml-mode tide typescript-mode symon string-inflection spaceline-all-the-icons smex seeing-is-believing rvm ruby-tools ruby-test-mode ruby-refactor ruby-hash-syntax rubocop rspec-mode robe realgud test-simple loc-changes load-relative rbenv racer protobuf-mode projectile-rails rake inflections pony-mode plantuml-mode pdf-tools password-generator ox-hugo ox-gfm overseer org-journal org-brain ob-ipython nameless mvn minitest meghanada maven-test-mode magit-svn livid-mode json-navigator hierarchy js2-refactor multiple-cursors js-doc ivy-yasnippet ivy-xref ivy-rtags ivy-purpose window-purpose imenu-list ivy-hydra insert-shebang groovy-mode groovy-imports gradle-mode google-c-style godoctor go-tag go-rename go-impl go-guru go-gen-test go-fill-struct go-eldoc gmail-message-mode ham-mode html-to-markdown gitignore-templates github-search github-clone gist gh marshal logito pcache forge closql emacsql-sqlite emacsql flyspell-correct-ivy flymd flycheck-rust flycheck-rtags flycheck-bashate fish-mode feature-mode evil-org evil-lion evil-goggles evil-cleverparens paredit ensime sbt-mode scala-mode skewer-mode websocket js2-mode editorconfig edit-server doom-modeline eldoc-eval shrink-path all-the-icons memoize dockerfile-mode docker json-mode tablist docker-tramp json-snatcher json-reformat disaster csv-mode counsel-projectile company-terraform terraform-mode hcl-mode company-tern tern company-shell company-rtags rtags company-plsense company-go go-mode company-emacs-eclim eclim company-c-headers company-auctex clang-format chruby centered-cursor-mode cargo rust-mode bundler inf-ruby browse-at-remote auto-complete-rst font-lock+ dotenv-mode graphql-mode phpunit phpcbf php-extras php-auto-yasnippets drupal-mode company-php ac-php-core xcscope php-mode zeal-at-point counsel-dash helm-dash elfeed-web elfeed-org elfeed-goodies ace-jump-mode noflet elfeed flycheck-kotlin kotlin-mode ibuffer-projectile ghub auctex adoc-mode markup-faces yapfify pytest pyenv-mode py-isort pippel pipenv pyvenv pip-requirements live-py-mode importmagic epc ctable concurrent deferred cython-mode company-anaconda anaconda-mode pythonic emojify emoji-cheat-sheet-plus company-emoji web-mode web-beautify tagedit slim-mode scss-mode sass-mode pug-mode prettier-js less-css-mode impatient-mode simple-httpd helm-css-scss haml-mode emmet-mode counsel-css company-web web-completion-data add-node-modules-path mu4e-query-fragments org-super-agenda mu4e-maildirs-extension mu4e-alert ht xterm-color unfill smeargle shell-pop orgit org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-mime org-download mwim multi-term mmm-mode markdown-toc markdown-mode magit-gitflow magit-popup helm-gitignore helm-company helm-c-yasnippet gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md fuzzy flyspell-correct-helm flyspell-correct flycheck-pos-tip pos-tip flycheck evil-magit magit transient git-commit with-editor eshell-z eshell-prompt-extras esh-help diff-hl company-statistics company auto-yasnippet auto-dictionary ac-ispell auto-complete ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist highlight evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async yasnippet htmlize))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
