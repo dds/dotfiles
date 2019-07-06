@@ -72,8 +72,6 @@ values."
      django
      docker
      emacs-lisp
-     emacs-lisp
-     emoji
      git
      github
      gtags
@@ -292,11 +290,11 @@ values."
    dotspacemacs-fullscreen-at-startup t
    ;; If non nil `spacemacs/toggle-fullscreen' will not use native fullscreen.
    ;; Use to disable fullscreen animations in OSX. (default nil)
-   dotspacemacs-fullscreen-use-non-native t
+   dotspacemacs-fullscreen-use-non-native nil
    ;; If non nil the frame is maximized when Emacs starts up.
    ;; Takes effect only if `dotspacemacs-fullscreen-at-startup' is nil.
    ;; (default nil) (Emacs 24.4+ only)
-   dotspacemacs-maximized-at-startup t
+   dotspacemacs-maximized-at-startup nil
    ;; A value from the range (0..100), in increasing opacity, which describes
    ;; the transparency level of a frame when it's active or selected.
    ;; Transparency can be toggled through `toggle-transparency'. (default 90)
@@ -441,11 +439,12 @@ you should place your code here."
   (advice-add 'pyenv-mode-set :after 'pyenv-venv-wrapper-act)
   (defun pyenv-venv-wrapper-deact (&optional ARG PRED)
     (setenv "VIRTUAL_ENV"))
+  (defun dds//projectilize (f &rest args)
+    (projectile-with-default-dir (projectile-ensure-project (projectile-project-root))
+      (call-interactively f)))
   (advice-add 'pyenv-mode-unset :after 'pyenv-venv-wrapper-deact)
-  (advice-add 'spacemacs/python-start-or-switch-repl :around
-              (lambda (f &rest args)
-                (projectile-with-default-dir (projectile-ensure-project (projectile-project-root))
-                  (call-interactively f))))
+  (advice-add 'spacemacs/python-start-or-switch-repl :around 'dds//projectilize)
+  (advice-add 'compile :around 'dds//projectilize)
   (server-force-delete)
   (server-start)
   )

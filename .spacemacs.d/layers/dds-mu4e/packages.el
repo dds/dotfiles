@@ -71,23 +71,15 @@
                      (when msg
                        (string-prefix-p "/nerdwallet" (mu4e-message-field msg :maildir))))
        :vars `(( mu4e-mail-from-address . "dsmith@nerdwallet.com" )
-               ( mu4e-compose-signature .
-                 (concat
-                  "David D. Smith\n"
-                  "\n"
-                  "dsmith@nerdwallet.com\n"
-                  "415-779-5893\n"
-                  "875 Stevenson St. - 5th Floor\n"
-                  "San Francisco, CA 94103\n\n"
-                  "<http://www.nerdwallet.com/>\n"
-                  "Providing clarity for all of life's financial decisions\n"
-                  ))))
+               ( message-signature-file . "~/.signature.nerdwallet" )
+               ( mu4e-compose-signature . t )))
      ,(make-mu4e-context
        :name "gmail"
        :match-func (lambda (msg)
                      (when msg
                        (string-prefix-p "/gmail" (mu4e-message-field msg :maildir))))
        :vars `(( mu4e-mail-from-address . "davidsmith@acm.org" )
+               ( message-signature-file . "~/.signature" )
                ( mu4e-compose-signature . t)))
      ,(make-mu4e-context
        :name "bosabosa"
@@ -97,6 +89,7 @@
                          (ignore-errors
                            (string-match-p "bosabosa.org" (message-sendmail-envelope-from)))))
        :vars '(( mu4e-mail-from-address . "dds@bosabosa.org" )
+               ( message-signature-file . "~/.signature" )
                ( mu4e-compose-signature . t)))
      ,(make-mu4e-context
        :name "cad"
@@ -104,6 +97,7 @@
                      (when msg
                        (string-prefix-p "/cad" (mu4e-message-field msg :maildir))))
        :vars `(( mu4e-mail-from-address . "david@cad.xyz" )
+               ( message-signature-file . "~/.signature" )
                ( mu4e-compose-signature . t)))
      )))
 
