@@ -10,8 +10,7 @@
            (mu4e-compose-mode . turn-on-visual-line-mode)
            (mu4e-compose-pre . dds-mu4e//set-from-address)
            (mu4e-compose-mode . (lambda () (org-mu4e-compose-org-mode)))
-           (mu4e-view-mode . turn-on-visual-line-mode)
-           (mu4e-view-mode . emojify-mode))
+           (mu4e-view-mode . turn-on-visual-line-mode))
     :bind (
            :map mu4e-headers-mode-map
              ("z" . dds-mu4e/mark-spam-and-next)
