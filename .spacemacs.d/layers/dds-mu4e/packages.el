@@ -46,7 +46,7 @@
      mu4e-sent-messages-behavior 'delete
      mu4e-view-show-addresses t
      mu4e-view-show-images nil
-     mu4e-headers-sort-direction 'ascending
+     mu4e-headers-sort-direction 'descending
      )
     ;; contexts, i.e. mail accounts
     (dds-mu4e/post-init-mu4e/config-contexts)
