@@ -16,6 +16,8 @@
 
 (package! helm-tramp)
 (package! visual-fill-column)
+(package! cmake-mode)
+
 ;; To install SOME-PACKAGE from MELPA, ELPA or emacsmirror:
 ;(package! some-package)
 
