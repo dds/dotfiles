@@ -6,26 +6,22 @@ case "$(uname -s)" in
     MINGW*)     machine=mingw;;
     *)          machine="UNKNOWN:${unameOut}"
 esac
-export EDITOR="emacsclient"
-export GTK_IM_MODULE="ibus"
-export XMODIFIERS="@im=ibus"
-export QT_IM_MODULE="ibus"
-export GOPATH=~/code/go
-if [ "$machine" = "mac" ]; then
-    GOROOT="`brew --prefix go`/libexec"
-else
-    GOROOT=/usr/local/go
-fi
-export GOROOT
-export PASSWORD_STORE_DIR=~/Sync/Private/PassStore
-export PATH=~/src/mu/mu:~/.cargo/bin:$GOPATH/bin:$GOROOT/bin:~/.local/bin:/usr/local/opt/node@6/bin:$PATH
-export GPG_KEY=0x22B8564124FA9655
-export PGP_KEY=$GPG_KEY
-export SDKMAN_DIR="$HOME/.sdkman"
 
-if [ -s "$SDKMAN_DIR/bin/sdkman-init.sh" ]; then
-    source "$SDKMAN_DIR/bin/sdkman-init.sh"
+if [ "$machine" = "mac" ]; then
+    export GOROOT="`brew --prefix go`/libexec"
+else
+    export GOROOT=/usr/local/go/libexec
 fi
+
+export EDITOR="emacsclient"
+export GOPATH=~/code/go
+export GPG_KEY=0x22B8564124FA9655
+export GTK_IM_MODULE="ibus"
+export PASSWORD_STORE_DIR=~/Sync/pass
+export PATH=~/.local/bin:~/.emacs.d/bin:~/.cargo/bin:$GOPATH/bin:$GOROOT/bin:$PATH
+export PGP_KEY=$GPG_KEY
+export QT_IM_MODULE="ibus"
+export XMODIFIERS="@im=ibus"
 
 _is_ssh() {
     [ -n "${SSH_CONNECTION-}${SSH_CLIENT-}${SSH_TTY-}" ]
@@ -45,4 +41,3 @@ if echo "$0" | grep -q bash >/dev/null; then
         . ~/.bashrc
     fi
 fi
-
