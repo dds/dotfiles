@@ -1,14 +1,16 @@
-[core]
-	pager = /bin/cat
-[push]
-	default = simple
-[pull]
-	rebase = true
+[user]
+	name = David D. Smith
 [alias]
 	lola = log --graph --decorate --pretty=oneline --abbrev-commit
 	lol = log --graph --decorate --pretty=oneline --abbrev-commit
+[core]
+	pager = /bin/cat
 [hub]
 	protocol = ssh
+[pull]
+	rebase = true
+[push]
+	default = simple
 [status]
 	submoduleSummary = true
 [url "git@github.com:"]
