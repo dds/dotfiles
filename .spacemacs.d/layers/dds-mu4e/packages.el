@@ -38,8 +38,6 @@
                                    "davidsmith@acm.org"
                                    "david.daniel.smith@gmail.com"
                                    "dds@bosabosa.org"
-                                   "david.smith@gatehub.net"
-                                   "david@cad.xyz"
                                    "dsmith@nerdwallet.com"
                                    )
      mu4e-refile-folder (lambda (msg) (dds-mu4e//maildir-subfolder "archive" msg))
