@@ -14,9 +14,9 @@
 ;; ...Or *all* packages (NOT RECOMMENDED; will likely break things)
 ;(unpin! t)
 
-(package! helm-tramp)
-(package! visual-fill-column)
 (package! cmake-mode)
+(package! mu4e-query-fragments)
+(package! visual-fill-column)
 
 ;; To install SOME-PACKAGE from MELPA, ELPA or emacsmirror:
 ;(package! some-package)
