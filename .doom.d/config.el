@@ -201,3 +201,10 @@
   (interactive)
   (mu4e~view-in-headers-context
    (dds-mu4e/mark-spam-and-next)))
+
+
+(after! go-mode
+  (set-lookup-handlers! 'go-mode
+    :definition #'godef-jump
+    :references #'go-guru-referrers
+    :documentation #'godef-describe))
