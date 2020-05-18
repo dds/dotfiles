@@ -73,15 +73,16 @@
   :hook ((mu4e-compose-mode . turn-on-flyspell)
          (mu4e-compose-mode . turn-on-visual-line-mode)
          (mu4e-compose-pre . dds-mu4e//set-from-address)
-         (mu4e-compose-mode . (lambda () (org-mu4e-compose-org-mode)))
+         ;; (mu4e-compose-mode . (lambda () (org-mu4e-compose-org-mode)))
          (mu4e-view-mode . turn-on-visual-line-mode))
-  :bind (
-         :map mu4e-headers-mode-map
-         ("#" . dds-mu4e/mark-spam-and-next)
-         :map mu4e-view-mode-map
-         ("#" . dds-mu4e/view-mark-spam-and-next)
-         )
   :config
+  (map! :map mu4e-headers-mode-map
+        :nv "#" 'dds-mu4e/mark-spam-and-next)
+  (map! :map mu4e-headers-mode-map
+        :nv "T" 'mu4e-headers-mark-thread)
+  (map! :map mu4e-view-mode-map
+        :nv "#" 'dds-mu4e/view-mark-spam-and-next)
+  (require 'mu4e-query-fragments)
   (setq
    mu4e-maildir "~/mail"
    mu4e-confirm-quit nil
@@ -113,7 +114,6 @@
    mu4e-headers-sort-direction 'descending
    mu4e-context-policy 'pick-first
    ;; contexts, i.e. mail accounts
-   (dds-mu4e/post-init-mu4e/config-contexts)
    mu4e-contexts
    `(,(make-mu4e-context
        :name "nw"
