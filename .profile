@@ -36,8 +36,6 @@ _is_ssh() {
 #     fi
 # fi
  
-eval "$(pyenv init -)"
-
 if echo "$0" | grep -q bash >/dev/null; then
     if [ -r ~/.bashrc ]; then
         . ~/.bashrc
