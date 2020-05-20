@@ -51,10 +51,10 @@
 ;; You can also try 'gd' (or 'C-c g d') to jump to their definition and see how
 ;; they are implemented.
 
-(defun pyenv-venv-wrapper-act (&optional ARG PRED)
+(defun pyenv-venv-wrapper-act ()
   (setenv "VIRTUAL_ENV" (shell-command-to-string "_pyenv_virtualenv_hook; echo -n $VIRTUAL_ENV")))
 (advice-add 'pyenv-mode-set :after 'pyenv-venv-wrapper-act)
-(defun pyenv-venv-wrapper-deact (&optional ARG PRED)
+(defun pyenv-venv-wrapper-deact ()
   (setenv "VIRTUAL_ENV"))
 (advice-add 'pyenv-mode-unset :after 'pyenv-venv-wrapper-deact)
 
@@ -208,3 +208,19 @@
     :definition #'godef-jump
     :references #'go-guru-referrers
     :documentation #'godef-describe))
+
+;; https://github.com/jorgenschaefer/pyvenv/issues/51#issuecomment-474785730
+(defun dds//pyvenv-autoload ()
+  "Automatically activates pyvenv version if build/venv/* directory exists."
+  (f-traverse-upwards
+   (lambda (path)
+     (let ((venv-path (car (f-glob (f-join (f-expand "build/venv" path) "*")))))
+       (if (and venv-path (f-exists? venv-path))
+           (progn
+             (pyvenv-activate venv-path)
+             t)
+         nil)))))
+
+
+(after! python
+  (add-hook 'python-mode-local-vars-hook 'dds//pyvenv-autoload))
