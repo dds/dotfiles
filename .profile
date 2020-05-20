@@ -15,6 +15,7 @@ fi
 
 export EDITOR="emacsclient"
 export GOPATH=~/code/go
+export GONOSUMDB=github.com/NerdWallet
 export GPG_KEY=0x22B8564124FA9655
 export GTK_IM_MODULE="ibus"
 export PASSWORD_STORE_DIR=~/Sync/pass
