@@ -1,5 +1,0 @@
-[Desktop Entry]
-Name=ctrlcaps
-Comment=Remap Capslock to Control
-Type=Application
-Exec=/usr/bin/setxkbmap -model evdev -option ctrl:nocaps

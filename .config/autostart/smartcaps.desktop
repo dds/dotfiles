@@ -1,0 +1,5 @@
+[Desktop Entry]
+Name=smartcaps
+Comment=Smartcaps
+Type=Application
+Exec=smartcaps.xorg

@@ -1,0 +1,4 @@
+#!/bin/sh
+/usr/bin/setxkbmap -model vdev -option ctrl:nocaps
+xcape -e 'Control_L=Escape'
+
