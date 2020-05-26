@@ -51,13 +51,6 @@
 ;; You can also try 'gd' (or 'C-c g d') to jump to their definition and see how
 ;; they are implemented.
 
-(defun pyenv-venv-wrapper-act ()
-  (setenv "VIRTUAL_ENV" (shell-command-to-string "_pyenv_virtualenv_hook; echo -n $VIRTUAL_ENV")))
-(advice-add 'pyenv-mode-set :after 'pyenv-venv-wrapper-act)
-(defun pyenv-venv-wrapper-deact ()
-  (setenv "VIRTUAL_ENV"))
-(advice-add 'pyenv-mode-unset :after 'pyenv-venv-wrapper-deact)
-
 ;; (defun dds//projectilize (f &rest args)
 ;;   (projectile-with-default-dir (projectile-ensure-project (projectile-project-root))
 ;;     (call-interactively f)))
@@ -68,20 +61,23 @@
 (let ((default-directory "/usr/local/share/emacs/site-lisp/"))
   (normal-top-level-add-subdirs-to-load-path))
 
+(after! go-mode
+  (set-lookup-handlers! 'go-mode
+    :definition #'godef-jump
+    :references #'go-guru-referrers
+    :documentation #'godef-describe))
 
 (use-package! mu4e
   :hook ((mu4e-compose-mode . turn-on-flyspell)
          (mu4e-compose-mode . turn-on-visual-line-mode)
-         (mu4e-compose-pre . dds-mu4e//set-from-address)
+         (mu4e-compose-pre . mu4e//set-from-address)
          ;; (mu4e-compose-mode . (lambda () (org-mu4e-compose-org-mode)))
          (mu4e-view-mode . turn-on-visual-line-mode))
   :config
   (map! :map mu4e-headers-mode-map
-        :nv "#" 'dds-mu4e/mark-spam-and-next)
-  (map! :map mu4e-headers-mode-map
-        :nv "T" 'mu4e-headers-mark-thread)
+        :nv "#" 'mu4e//mark-spam-and-next)
   (map! :map mu4e-view-mode-map
-        :nv "#" 'dds-mu4e/view-mark-spam-and-next)
+        :nv "#" 'mu4e//view-mark-spam-and-next)
   (require 'mu4e-query-fragments)
   (setq
    mu4e-maildir "~/mail"
@@ -105,8 +101,8 @@
      "dds@bosabosa.org"
      "dsmith@nerdwallet.com"
      )
-   mu4e-refile-folder (lambda (msg) (dds-mu4e//maildir-subfolder "archive" msg))
-   mu4e-trash-folder (lambda (msg) (dds-mu4e//maildir-subfolder "trash" msg))
+   mu4e-refile-folder (lambda (msg) (mu4e//maildir-subfolder "archive" msg))
+   mu4e-trash-folder (lambda (msg) (mu4e//maildir-subfolder "trash" msg))
    mu4e-drafts-folder "/drafts"
    mu4e-sent-messages-behavior 'delete
    mu4e-view-show-addresses t
@@ -174,12 +170,12 @@
                                     " or ")))
          mu4e-query-fragments-append " and %recent and not %hidden"))
 
-(defun dds-mu4e//maildir-subfolder (subfolder msg)
+(defun mu4e//maildir-subfolder (subfolder msg)
   (if msg
       (let ((maildir (mu4e-message-field msg :maildir)))
         (replace-regexp-in-string "^\\(/\[^/]+\\)/\\(.*\\)$" (concat "\\1/" subfolder) maildir ))))
 
-(defun dds-mu4e//set-from-address ()
+(defun mu4e//set-from-address ()
   (let* ((msg mu4e-compose-parent-message)
          (from (or (when (and msg
                               (mu4e-message-contact-field-matches msg :to "bosabosa.org"))
@@ -187,7 +183,7 @@
                    (or mu4e-mail-from-address user-mail-address))))
     (set (make-local-variable 'user-mail-address) from)))
 
-(defun dds-mu4e/mark-spam-and-next ()
+(defun mu4e//mark-spam-and-next ()
   "Move the message at point to the correct spam folder, then move to the next message."
   (interactive)
   (let* ((original-maildir (mu4e-message-field (mu4e-message-at-point) :maildir))
@@ -197,20 +193,24 @@
     (mu4e-mark-set 'move spam-maildir)
     (when mu4e-headers-advance-after-mark (mu4e-headers-next))))
 
-(defun dds-mu4e/view-mark-spam-and-next ()
+(defun mu4e//view-mark-spam-and-next ()
   (interactive)
   (mu4e~view-in-headers-context
-   (dds-mu4e/mark-spam-and-next)))
+   (mu4e//mark-spam-and-next)))
 
+(after! python
+  (add-hook 'python-mode-local-vars-hook 'pyvenv//build/venv)
+  (advice-add 'pyenv-mode-set :after 'pyenv-venv-wrapper-act)
+  (advice-add 'pyenv-mode-unset :after 'pyenv-venv-wrapper-deact))
 
-(after! go-mode
-  (set-lookup-handlers! 'go-mode
-    :definition #'godef-jump
-    :references #'go-guru-referrers
-    :documentation #'godef-describe))
+(defun pyenv-venv-wrapper-act ()
+  (setenv "VIRTUAL_ENV" (shell-command-to-string "_pyenv_virtualenv_hook; echo -n $VIRTUAL_ENV")))
+
+(defun pyenv-venv-wrapper-deact ()
+  (setenv "VIRTUAL_ENV"))
 
 ;; https://github.com/jorgenschaefer/pyvenv/issues/51#issuecomment-474785730
-(defun dds//pyvenv-autoload ()
+(defun pyvenv//build/venv ()
   "Automatically activates pyvenv version if build/venv/* directory exists."
   (f-traverse-upwards
    (lambda (path)
@@ -220,7 +220,3 @@
              (pyvenv-activate venv-path)
              t)
          nil)))))
-
-
-(after! python
-  (add-hook 'python-mode-local-vars-hook 'dds//pyvenv-autoload))
