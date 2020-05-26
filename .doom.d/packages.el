@@ -17,6 +17,7 @@
 (package! cmake-mode)
 (package! mu4e-query-fragments)
 (package! visual-fill-column)
+(package! org-journal)
 
 ;; To install SOME-PACKAGE from MELPA, ELPA or emacsmirror:
 ;(package! some-package)
