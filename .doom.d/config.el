@@ -157,14 +157,19 @@
 (after! org-mode
   (dds-org/post-init-org))
 
+(defun org-journal//safe-is-journal ()
+  "Determine if file is a journal file."
+  (when (buffer-file-name)
+    (string-match (org-journal-dir-and-file-format->pattern) (buffer-file-name))))
+
 (use-package org-journal
   :hook ((org-journal-mode . (lambda () (visual-fill-column-mode 1))))
   :init
+  (defalias 'org-journal-is-journal 'org-journal//safe-is-journal)
   (setq-default
    org-journal-dir "~/plan/journal/"
    org-journal-file-format "%Y%m%d.org"
-   org-journal-enable-agenda-integration t
-   ))
+   org-journal-enable-agenda-integration t))
 
 (defun dds-org/post-init-org/config-archives ()
   (setq
