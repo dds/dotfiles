@@ -447,3 +447,8 @@
              (pyvenv-activate venv-path)
              t)
          nil)))))
+
+(use-package! deadgrep
+  :config
+  (global-set-key (kbd "<f5>") #'deadgrep)
+  )
