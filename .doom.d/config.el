@@ -391,7 +391,7 @@
   (setq! mu4e-query-fragments-list
          `(("%recent" . "date:18m..")
            ("%spam" . "maildir:/.*\/spam/")
-           ("%hidden" . "(maildir:/ripple\/.*/ or %spam or flag:draft or flag:trashed)")
+           ("%hidden" . "(maildir:/ripple\/.*/ or maildir:/.*\/trash/ or %spam or flag:draft or flag:trashed)")
            ("%family" . ,(mapconcat (lambda (c) (format "contact:\"%s\"" c))
                                     '("propilotmag.com" "wargolem" "ajsmith" "joelleegger")
                                     " or ")))
