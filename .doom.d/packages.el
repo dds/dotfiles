@@ -15,6 +15,7 @@
 ;(unpin! t)
 
 (package! cmake-mode)
+(package! deadgrep)
 (package! mu4e-query-fragments)
 (package! org-journal)
 (package! unfill)

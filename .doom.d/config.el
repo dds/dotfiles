@@ -307,6 +307,7 @@
   (require 'mu4e-query-fragments)
   (setq
    mu4e-maildir "~/mail"
+   mu4e-get-mail-command "true" ;; mail sync runs in the background
    mu4e-confirm-quit nil
    mu4e-use-fancy-chars nil
    mu4e-attachment-dir "/tmp"
