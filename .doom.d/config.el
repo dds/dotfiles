@@ -321,13 +321,6 @@
      )
    mu4e-compose-dont-reply-to-self t
    mu4e-change-filenames-when-moving t
-   mu4e-user-mail-address-list
-   '(
-     "davidsmith@acm.org"
-     "david.daniel.smith@gmail.com"
-     "dds@bosabosa.org"
-     "dsmith@nerdwallet.com"
-     )
    mu4e-refile-folder (lambda (msg) (mu4e//maildir-subfolder "archive" msg))
    mu4e-trash-folder (lambda (msg) (mu4e//maildir-subfolder "trash" msg))
    mu4e-drafts-folder "/drafts"
@@ -391,10 +384,7 @@
   (setq! mu4e-query-fragments-list
          `(("%recent" . "date:18m..")
            ("%spam" . "maildir:/.*\/spam/")
-           ("%hidden" . "(maildir:/ripple\/.*/ or maildir:/.*\/trash/ or %spam or flag:draft or flag:trashed)")
-           ("%family" . ,(mapconcat (lambda (c) (format "contact:\"%s\"" c))
-                                    '("propilotmag.com" "wargolem" "ajsmith" "joelleegger")
-                                    " or ")))
+           ("%hidden" . "(maildir:/.*\/trash/ or %spam or flag:draft or flag:trashed)"))
          mu4e-query-fragments-append " and %recent and not %hidden"))
 
 (defun mu4e//maildir-subfolder (subfolder msg)
