@@ -181,3 +181,10 @@
        :config
        ;;literate
        (default +bindings +smartparens))
+
+(setq +format-on-save-enabled-modes
+      '(not emacs-lisp-mode
+            sql-mode
+            tex-mode
+            latex-mode
+            yaml-mode))
