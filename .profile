@@ -9,8 +9,6 @@ esac
 
 if [ "$machine" = "mac" ]; then
     export GOROOT="`brew --prefix go`/libexec"
-else
-    export GOROOT=/usr/local/go/libexec
 fi
 
 export EDITOR="emacsclient"
