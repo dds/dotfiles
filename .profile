@@ -7,20 +7,20 @@ case "$(uname -s)" in
     *)          machine="UNKNOWN:${unameOut}"
 esac
 
-if [ "$machine" = "mac" ]; then
-    export GOROOT="`brew --prefix go`/libexec"
-fi
-
 export EDITOR="emacsclient"
 export GOPATH=~/code/go
 export GONOSUMDB=github.com/NerdWallet
 export GPG_KEY=0x22B8564124FA9655
 export GTK_IM_MODULE="ibus"
 export PASSWORD_STORE_DIR=~/Sync/pass
-export PATH=~/.local/bin:~/.emacs.d/bin:~/.cargo/bin:$GOPATH/bin:$GOROOT/bin:$PATH
+export PATH=~/.local/bin:~/.emacs.d/bin:~/.cargo/bin:$GOPATH/bin:$PATH
 export PGP_KEY=$GPG_KEY
 export QT_IM_MODULE="ibus"
 export XMODIFIERS="@im=ibus"
+
+if [ "$machine" = "mac" ]; then
+    export GOROOT="`brew --prefix go`/libexec"
+fi
 
 _is_ssh() {
     [ -n "${SSH_CONNECTION-}${SSH_CLIENT-}${SSH_TTY-}" ]
