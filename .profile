@@ -35,6 +35,10 @@ _is_ssh() {
 #     fi
 # fi
  
+if [ -f "$HOME/.sdkman/bin/sdkman-init.sh" ]; then
+    . "$HOME/.sdkman/bin/sdkman-init.sh" 
+fi
+
 if echo "$0" | grep -q bash >/dev/null; then
     if [ -r ~/.bashrc ]; then
         . ~/.bashrc
