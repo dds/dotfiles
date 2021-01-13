@@ -82,8 +82,6 @@ def main():
         raise RuntimeError("$0=%s; don't know how to do that" % parser.prog)
 
     accountsList = getAccounts(args.accounts, getKeyring())
-    if not accountsList:
-        sys.exit(-1)
     args.output.write(render(accountsList=accountsList,
                              template=env.get_template(template)))
 
