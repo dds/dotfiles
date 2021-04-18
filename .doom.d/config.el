@@ -59,7 +59,7 @@
 ;;
 
 ;; Add homebrew emacs lisp to load path
-(let ((default-directory "/usr/local/share/emacs/site-lisp/"))
+(let ((default-directory "/opt/homebrew/share/emacs/site-lisp/"))
   (normal-top-level-add-subdirs-to-load-path))
 
 (defun dds-org/post-init-org ()
@@ -438,7 +438,7 @@
              t)
          nil)))))
 
-(use-package! deadgrep
+(use-package! ripgrep
   :config
-  (global-set-key (kbd "<f5>") #'deadgrep)
+  (global-set-key (kbd "<f5>") #'projectile-ripgrep)
   )
