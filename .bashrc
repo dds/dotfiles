@@ -4,11 +4,10 @@
 # Version: 0.2.2
 
 # Unique Bash version check
-if ((BASH_VERSINFO[0] < 4))
-then
-  echo "sensible.bash: Looks like you're running an older version of Bash."
-  echo "sensible.bash: You need at least bash-4.0 or some options will not work correctly."
-  echo "sensible.bash: Keep your software up-to-date!"
+if ((BASH_VERSINFO[0] < 4)); then
+    echo "sensible.bash: Looks like you're running an older version of Bash."
+    echo "sensible.bash: You need at least bash-4.0 or some options will not work correctly."
+    echo "sensible.bash: Keep your software up-to-date!"
 fi
 
 ## GENERAL OPTIONS ##
@@ -23,12 +22,11 @@ shopt -s checkwinsize
 # Automatically trim long paths in the prompt (requires Bash 4.x)
 PROMPT_DIRTRIM=2
 
-
 # Turn on recursive globbing (enables ** to recurse all directories)
-shopt -s globstar 2> /dev/null
+shopt -s globstar 2>/dev/null
 
 # Case-insensitive globbing (used in pathname expansion)
-shopt -s nocaseglob;
+shopt -s nocaseglob
 
 ## SANE HISTORY DEFAULTS ##
 
@@ -86,11 +84,11 @@ _setup_keybindings() {
 ## BETTER DIRECTORY NAVIGATION ##
 
 # Prepend cd to directory names automatically
-shopt -s autocd 2> /dev/null
+shopt -s autocd 2>/dev/null
 # Correct spelling errors during tab-completion
-shopt -s dirspell 2> /dev/null
+shopt -s dirspell 2>/dev/null
 # Correct spelling errors in arguments supplied to cd
-shopt -s cdspell 2> /dev/null
+shopt -s cdspell 2>/dev/null
 
 # This defines where cd looks for targets
 # Add the directories you want to have fast access to, separated by colon
@@ -101,15 +99,15 @@ CDPATH=".:~:~/src"
 # Define a variable containing a path and you will be able to cd into it regardless of the directory you're in
 shopt -s cdable_vars
 
-# 
+#
 ## Other functions
 
-sum () {
+sum() {
     # Add up all arguments as numbers and print the result.
     awk '{ sum +=$1 } END {printf "%0.3f", sum}'
 }
 
-# 
+#
 #  _ __   ___ | |_   _  __ _| | ___ | |_
 # | '_ \ / _ \| | | | |/ _` | |/ _ \| __|
 # | |_) | (_) | | |_| | (_| | | (_) | |_
@@ -174,68 +172,68 @@ POLYGLOT_PROMPT_DIRTRIM=3
 #   $1 exit status of last command (always $?)
 ############################################################
 _polyglot_exit_status() {
-  case $1 in
-    0) return ;;
-    *) printf '(%d) ' "$1" ;;
-  esac
+    case $1 in
+        0) return ;;
+        *) printf '(%d) ' "$1" ;;
+    esac
 }
 
 ###########################################################
 # Is the user connected via SSH?
 ###########################################################
 _polyglot_is_ssh() {
-  [ -n "${SSH_CONNECTION-}${SSH_CLIENT-}${SSH_TTY-}" ]
+    [ -n "${SSH_CONNECTION-}${SSH_CLIENT-}${SSH_TTY-}" ]
 }
 
 ###########################################################
 # Provide the effective user ID
 ###########################################################
 _polyglot_euid() {
-  case ${POLYGLOT_UNAME:=$(uname -s)} in
-    SunOS) /usr/xpg4/bin/id -u ;;
-    *) id -u ;;
-  esac
+    case ${POLYGLOT_UNAME:=$(uname -s)} in
+        SunOS) /usr/xpg4/bin/id -u ;;
+        *) id -u ;;
+    esac
 }
 
 ###########################################################
 # Is the user a superuser?
 ###########################################################
 _polyglot_is_superuser() {
-  [ ${EUID:-$(_polyglot_euid)} -eq 0 ]
+    [ ${EUID:-$(_polyglot_euid)} -eq 0 ]
 }
 
 ###########################################################
 # Does the terminal support enough colors?
 ###########################################################
 _polyglot_has_colors() {
-  # The DragonFly BSD system console has trouble displaying colors in pdksh
-  case ${POLYGLOT_UNAME:=$(uname -s)} in
-    DragonFly)
-      case $(who am i) in *ttyv*) return 1 ;; esac
-      ;;
-  esac
+    # The DragonFly BSD system console has trouble displaying colors in pdksh
+    case ${POLYGLOT_UNAME:=$(uname -s)} in
+        DragonFly)
+            case $(who am i) in *ttyv*) return 1 ;; esac
+            ;;
+    esac
 
-  case $TERM in
-    *-256color) POLYGLOT_TERM_COLORS=256 ;;
-    vt100|dumb) POLYGLOT_TERM_COLORS=-1 ;;
-    *)
-      if command -v tput > /dev/null 2>&1; then
-        case ${POLYGLOT_UNAME:=$(uname -s)} in
-          FreeBSD|DragonFly) POLYGLOT_TERM_COLORS=$(tput Co) ;;
-          *) POLYGLOT_TERM_COLORS=$(tput colors) ;;
-        esac
-      else
-        POLYGLOT_TERM_COLORS=-1
-      fi
-      ;;
-  esac
-  if [ "${POLYGLOT_TERM_COLORS:-0}" -ge 8 ]; then
-    unset POLYGLOT_TERM_COLORS
-    return 0
-  else
-    unset POLYGLOT_TERM_COLORS
-    return 1
-  fi
+    case $TERM in
+        *-256color) POLYGLOT_TERM_COLORS=256 ;;
+        vt100 | dumb) POLYGLOT_TERM_COLORS=-1 ;;
+        *)
+            if command -v tput >/dev/null 2>&1; then
+                case ${POLYGLOT_UNAME:=$(uname -s)} in
+                    FreeBSD | DragonFly) POLYGLOT_TERM_COLORS=$(tput Co) ;;
+                    *) POLYGLOT_TERM_COLORS=$(tput colors) ;;
+                esac
+            else
+                POLYGLOT_TERM_COLORS=-1
+            fi
+            ;;
+    esac
+    if [ "${POLYGLOT_TERM_COLORS:-0}" -ge 8 ]; then
+        unset POLYGLOT_TERM_COLORS
+        return 0
+    else
+        unset POLYGLOT_TERM_COLORS
+        return 1
+    fi
 }
 
 ###########################################################
@@ -247,21 +245,21 @@ _polyglot_has_colors() {
 ###########################################################
 # shellcheck disable=SC2120
 _polyglot_branch_status() {
-  [ -n "$ZSH_VERSION" ] && \
-    setopt LOCAL_OPTIONS NO_WARN_CREATE_GLOBAL NO_WARN_NESTED_VAR > /dev/null 2>&1
-  POLYGLOT_REF=$(env git symbolic-ref --quiet HEAD 2> /dev/null)
-  case $? in        # See what the exit code is.
-    0) ;;           # $POLYGLOT_REF contains the name of a checked-out branch.
-    128) return ;;  # No Git repository here.
-    # Otherwise, see if HEAD is in a detached state.
-    *) POLYGLOT_REF=$(env git rev-parse --short HEAD 2> /dev/null) || return ;;
-  esac
+    [ -n "$ZSH_VERSION" ] &&
+        setopt LOCAL_OPTIONS NO_WARN_CREATE_GLOBAL NO_WARN_NESTED_VAR >/dev/null 2>&1
+    POLYGLOT_REF=$(env git symbolic-ref --quiet HEAD 2>/dev/null)
+    case $? in         # See what the exit code is.
+        0) ;;          # $POLYGLOT_REF contains the name of a checked-out branch.
+        128) return ;; # No Git repository here.
+        # Otherwise, see if HEAD is in a detached state.
+        *) POLYGLOT_REF=$(env git rev-parse --short HEAD 2>/dev/null) || return ;;
+    esac
 
-  if [ -n "$POLYGLOT_REF" ]; then
-    printf ' (%s%s)' "${POLYGLOT_REF#refs/heads/}" "$(_polyglot_branch_changes "$1")"
-  fi
+    if [ -n "$POLYGLOT_REF" ]; then
+        printf ' (%s%s)' "${POLYGLOT_REF#refs/heads/}" "$(_polyglot_branch_changes "$1")"
+    fi
 
-  unset POLYGLOT_REF
+    unset POLYGLOT_REF
 }
 
 ###########################################################
@@ -271,81 +269,84 @@ _polyglot_branch_status() {
 #   $1  If ksh, escape ! as !!
 ###########################################################
 _polyglot_branch_changes() {
-  [ -n "$ZSH_VERSION" ] && \
-    setopt LOCAL_OPTIONS NO_WARN_CREATE_GLOBAL NO_WARN_NESTED_VAR > /dev/null 2>&1
+    [ -n "$ZSH_VERSION" ] &&
+        setopt LOCAL_OPTIONS NO_WARN_CREATE_GLOBAL NO_WARN_NESTED_VAR >/dev/null 2>&1
 
-  POLYGLOT_GIT_STATUS=$(LC_ALL=C env git status 2>&1)
+    POLYGLOT_GIT_STATUS=$(LC_ALL=C env git status 2>&1)
 
-  POLYGLOT_SYMBOLS=''
+    POLYGLOT_SYMBOLS=''
 
-  case $POLYGLOT_GIT_STATUS in
-    *' have diverged,'*) POLYGLOT_SYMBOLS="${POLYGLOT_SYMBOLS}&*" ;;
-  esac
-  case $POLYGLOT_GIT_STATUS in
-    *'Your branch is behind '*) POLYGLOT_SYMBOLS="${POLYGLOT_SYMBOLS}&" ;;
-  esac
-  case $POLYGLOT_GIT_STATUS in
-    *'Your branch is ahead of '*) POLYGLOT_SYMBOLS="${POLYGLOT_SYMBOLS}*" ;;
-  esac
-  case $POLYGLOT_GIT_STATUS in
-    *'new file:   '*) POLYGLOT_SYMBOLS="${POLYGLOT_SYMBOLS}+" ;;
-  esac
-  case $POLYGLOT_GIT_STATUS in
-    *'deleted:    '*) POLYGLOT_SYMBOLS="${POLYGLOT_SYMBOLS}x" ;;
-  esac
-  case $POLYGLOT_GIT_STATUS in
-    *'modified:   '*)
-      if [ "$1" = 'ksh' ]; then
-        POLYGLOT_SYMBOLS="${POLYGLOT_SYMBOLS}!!"
-      else
-        POLYGLOT_SYMBOLS="${POLYGLOT_SYMBOLS}!"
-      fi
-      ;;
-  esac
-  case $POLYGLOT_GIT_STATUS in
-    *'renamed:    '*) POLYGLOT_SYMBOLS="${POLYGLOT_SYMBOLS}>" ;;
-  esac
-  case $POLYGLOT_GIT_STATUS in
-    *'Untracked files:'*) POLYGLOT_SYMBOLS="${POLYGLOT_SYMBOLS}?" ;;
-  esac
+    case $POLYGLOT_GIT_STATUS in
+        *' have diverged,'*) POLYGLOT_SYMBOLS="${POLYGLOT_SYMBOLS}&*" ;;
+    esac
+    case $POLYGLOT_GIT_STATUS in
+        *'Your branch is behind '*) POLYGLOT_SYMBOLS="${POLYGLOT_SYMBOLS}&" ;;
+    esac
+    case $POLYGLOT_GIT_STATUS in
+        *'Your branch is ahead of '*) POLYGLOT_SYMBOLS="${POLYGLOT_SYMBOLS}*" ;;
+    esac
+    case $POLYGLOT_GIT_STATUS in
+        *'new file:   '*) POLYGLOT_SYMBOLS="${POLYGLOT_SYMBOLS}+" ;;
+    esac
+    case $POLYGLOT_GIT_STATUS in
+        *'deleted:    '*) POLYGLOT_SYMBOLS="${POLYGLOT_SYMBOLS}x" ;;
+    esac
+    case $POLYGLOT_GIT_STATUS in
+        *'modified:   '*)
+            if [ "$1" = 'ksh' ]; then
+                POLYGLOT_SYMBOLS="${POLYGLOT_SYMBOLS}!!"
+            else
+                POLYGLOT_SYMBOLS="${POLYGLOT_SYMBOLS}!"
+            fi
+            ;;
+    esac
+    case $POLYGLOT_GIT_STATUS in
+        *'renamed:    '*) POLYGLOT_SYMBOLS="${POLYGLOT_SYMBOLS}>" ;;
+    esac
+    case $POLYGLOT_GIT_STATUS in
+        *'Untracked files:'*) POLYGLOT_SYMBOLS="${POLYGLOT_SYMBOLS}?" ;;
+    esac
 
-  [ "$POLYGLOT_SYMBOLS" ] && printf ' %s' "$POLYGLOT_SYMBOLS"
+    [ "$POLYGLOT_SYMBOLS" ] && printf ' %s' "$POLYGLOT_SYMBOLS"
 
-  unset POLYGLOT_GIT_STATUS POLYGLOT_SYMBOLS
+    unset POLYGLOT_GIT_STATUS POLYGLOT_SYMBOLS
 }
 
 ###########################################################
 # Tests to see if the current shell is busybox ash
 ###########################################################
 _polyglot_is_busybox() {
-  case $(basename $0) in
-    ash|-ash|sh)
-      if command -v readlink > /dev/null 2>&1; then
-        case $(exec 2> /dev/null; readlink /proc/$$/exe) in
-          */busybox) return 0 ;;
-          *) return 1 ;;
-        esac
-      else
-        return 1
-      fi
-      ;;
-    *) return 1 ;;
-  esac
+    case $(basename $0) in
+        ash | -ash | sh)
+            if command -v readlink >/dev/null 2>&1; then
+                case $(
+                    exec 2>/dev/null
+                    readlink /proc/$$/exe
+                ) in
+                    */busybox) return 0 ;;
+                    *) return 1 ;;
+                esac
+            else
+                return 1
+            fi
+            ;;
+        *) return 1 ;;
+    esac
 }
 
 ###########################################################
 # Test to see if the current shell is pdksh
 ###########################################################
 _polyglot_is_pdksh() {
-  case $KSH_VERSION in
-    *'PD KSH'*)
-      case ${POLYGLOT_UNAME:=$(uname -s)} in
-        OpenBSD) POLYGLOT_KSH_BANG=ksh ;;
-      esac
-      return 0
-      ;;
-    *) return 1 ;;
-  esac
+    case $KSH_VERSION in
+        *'PD KSH'*)
+            case ${POLYGLOT_UNAME:=$(uname -s)} in
+                OpenBSD) POLYGLOT_KSH_BANG=ksh ;;
+            esac
+            return 0
+            ;;
+        *) return 1 ;;
+    esac
 }
 
 ###########################################################
@@ -353,10 +354,10 @@ _polyglot_is_pdksh() {
 # Shell).
 ###########################################################
 _polyglot_is_dtksh() {
-  case $0 in
-    *dtksh) return 0 ;;
-    *) return 1 ;;
-  esac
+    case $0 in
+        *dtksh) return 0 ;;
+        *) return 1 ;;
+    esac
 }
 
 ############################################################
@@ -376,44 +377,44 @@ _polyglot_is_dtksh() {
 #   $1 Number of directory elements to display
 ############################################################
 _polyglot_ksh93_prompt_dirtrim() {
-  # shellcheck disable=SC2015
-  [ -n "$1" ] && [ "$1" -gt 0 ] || set 2
+    # shellcheck disable=SC2015
+    [ -n "$1" ] && [ "$1" -gt 0 ] || set 2
 
-  typeset dir dir_minus_slashes dir_count
-  case $HOME in
-    /) dir=$PWD ;;                                  # In case root's $HOME is /
-    *) dir=${PWD#$HOME} ;;
-  esac
-  # The following line is not relevant to pdksh, but that does not mean it will
-  # not see it; obfuscate to avoid the report of a bad substitution.
-  dir_minus_slashes=$(eval echo '${dir//\//}')
-  dir_count=$((${#dir} - ${#dir_minus_slashes}))
-
-  if [ "$dir_count" -le "$1" ]; then
-    case $PWD in
-      ${HOME}) printf '%s' '~' ;;                   # In case root's $HOME is /
-      ${HOME}*) printf '~%s' "$dir" ;;
-      *) printf '%s' "$PWD" ;;
+    typeset dir dir_minus_slashes dir_count
+    case $HOME in
+        /) dir=$PWD ;; # In case root's $HOME is /
+        *) dir=${PWD#$HOME} ;;
     esac
-  else
-    typeset lopped_path i
-    lopped_path=$dir
-    i=0
-    while [ "$i" -ne "$1" ]; do
-      lopped_path=${lopped_path%\/*}
-      i=$((i+1))
-    done
+    # The following line is not relevant to pdksh, but that does not mean it will
+    # not see it; obfuscate to avoid the report of a bad substitution.
+    dir_minus_slashes=$(eval echo '${dir//\//}')
+    dir_count=$((${#dir} - ${#dir_minus_slashes}))
 
-    case $PWD in
-      ${HOME}*) printf '~/...%s' "${dir#${lopped_path}}" ;;
-      *) printf '...%s' "${PWD#${lopped_path}}" ;;
-    esac
-  fi
+    if [ "$dir_count" -le "$1" ]; then
+        case $PWD in
+            ${HOME}) printf '%s' '~' ;; # In case root's $HOME is /
+            ${HOME}*) printf '~%s' "$dir" ;;
+            *) printf '%s' "$PWD" ;;
+        esac
+    else
+        typeset lopped_path i
+        lopped_path=$dir
+        i=0
+        while [ "$i" -ne "$1" ]; do
+            lopped_path=${lopped_path%\/*}
+            i=$((i + 1))
+        done
+
+        case $PWD in
+            ${HOME}*) printf '~/...%s' "${dir#${lopped_path}}" ;;
+            *) printf '...%s' "${PWD#${lopped_path}}" ;;
+        esac
+    fi
 }
 
 _polyglot_main() {
-    if [ -n "$ZSH_VERSION" ] && [ "$0" != 'ksh' ] \
-           && [ "$0" != 'bash' ] && [ "$0" != 'sh' ]; then
+    if [ -n "$ZSH_VERSION" ] && [ "$0" != 'ksh' ] &&
+        [ "$0" != 'bash' ] && [ "$0" != 'sh' ]; then
 
         setopt PROMPT_SUBST
 
@@ -467,7 +468,7 @@ _polyglot_main() {
             psvar[1]=''
         fi
 
-        unset RPROMPT               # Clean up detritus from previously loaded prompts
+        unset RPROMPT # Clean up detritus from previously loaded prompts
 
         if _polyglot_has_colors; then
             PS1='%(4V.:.+)%(?..%B%F{red}(%?%)%b%f )'
@@ -508,7 +509,7 @@ _polyglot_main() {
                     PS1+="\w"
                     PS1+="\$(_polyglot_branch_status) \$ "
                 fi
-            else  # Superuser
+            else # Superuser
                 if _polyglot_has_colors; then
                     PS1="\[\e[01;31m\]\$(_polyglot_exit_status \$?)\[\e[0m\]"
                     PS1+="\[\e[7m\]\u@\h\[\e[0m\] "
@@ -520,6 +521,9 @@ _polyglot_main() {
                     PS1+="\w"
                     PS1+="\$(_polyglot_branch_status) # "
                 fi
+            fi
+            if [[ "$INSIDE_EMACS" = 'vterm' ]]; then
+                PS1+='$(vterm_printf "51;A")'
             fi
         }
 
@@ -534,7 +538,7 @@ _polyglot_main() {
 
         # vi command mode
         if [ "$TERM" != 'dumb' ]; then     # Line editing not enabled in Emacs shell
-            bind 'set show-mode-in-prompt'                      # Since bash 4.3
+            bind 'set show-mode-in-prompt' # Since bash 4.3
             bind 'set vi-ins-mode-string "+"'
             bind 'set vi-cmd-mode-string ":"'
         fi
@@ -542,8 +546,8 @@ _polyglot_main() {
         # ksh93, mksh, and zsh in bash, ksh, and sh emulation mode
         #####################################################################
 
-    elif [ -n "$KSH_VERSION" ] || _polyglot_is_dtksh || [ -n "$ZSH_VERSION" ] \
-                 && ! _polyglot_is_pdksh ; then
+    elif [ -n "$KSH_VERSION" ] || _polyglot_is_dtksh || [ -n "$ZSH_VERSION" ] &&
+        ! _polyglot_is_pdksh; then
         # Only display the $HOSTNAME for an ssh connection
         if _polyglot_is_ssh || _polyglot_is_superuser; then
             POLYGLOT_HOSTNAME_STRING=$(hostname)
@@ -624,7 +628,7 @@ _polyglot_main() {
                     else
                         PS1='$(_polyglot_exit_status $?)${LOGNAME:-$(logname)}$POLYGLOT_HOSTNAME_STRING $(_polyglot_ksh93_prompt_dirtrim "$POLYGLOT_PROMPT_DIRTRIM")$(_polyglot_branch_status $POLYGLOT_KSH_BANG) \$ '
                     fi
-                else  # Superuser
+                else # Superuser
                     if _polyglot_has_colors && [ -z "$ZSH_VERSION" ]; then
                         # shellcheck disable=2016
                         PS1="$(print '\E[31;1m$(_polyglot_exit_status $?)\E[0m\E[7m${LOGNAME:-$(logname)}$POLYGLOT_HOSTNAME_STRING\E[0m \E[34;1m$(_polyglot_ksh93_prompt_dirtrim "$POLYGLOT_PROMPT_DIRTRIM")\E[0m\E[33m$(_polyglot_branch_status $POLYGLOT_KSH_BANG)\E[0m # ')"
@@ -663,7 +667,7 @@ _polyglot_main() {
             [ -n "$1" ] && [ "$1" -gt 0 ] || set 2
 
             case $HOME in
-                /) POLYGLOT_PWD_MINUS_HOME=$PWD ;;            # In case root's $HOME is /
+                /) POLYGLOT_PWD_MINUS_HOME=$PWD ;; # In case root's $HOME is /
                 *) POLYGLOT_PWD_MINUS_HOME=${PWD#$HOME} ;;
             esac
 
@@ -679,7 +683,7 @@ _polyglot_main() {
             # If the working directory has not been abbreviated, display it thus
             if [ "$POLYGLOT_ABBREVIATED_PATH" = "${POLYGLOT_PWD_MINUS_HOME}" ]; then
                 case $PWD in
-                    ${HOME}) printf '%s' '~' ;;   # Or else, when $HOME is /, ~/ is printed
+                    ${HOME}) printf '%s' '~' ;; # Or else, when $HOME is /, ~/ is printed
                     ${HOME}*) printf '~%s' "${POLYGLOT_PWD_MINUS_HOME}" ;;
                     *) printf '%s' "$PWD" ;;
                 esac
@@ -709,7 +713,7 @@ _polyglot_main() {
 
             PS1=$(print "$POLYGLOT_NP\r")
             case $POLYGLOT_UNAME in
-                NetBSD*|OpenBSD*) PS1=$PS1$(print "$POLYGLOT_NP") ;;
+                NetBSD* | OpenBSD*) PS1=$PS1$(print "$POLYGLOT_NP") ;;
             esac
             PS1=$PS1$(print "\033[31;1m$POLYGLOT_NP")
             PS1=$PS1'$(_polyglot_exit_status $?)'
@@ -730,7 +734,7 @@ _polyglot_main() {
 
         elif ! _polyglot_is_superuser; then
             PS1='$(_polyglot_exit_status $?)${LOGNAME:-$(logname)}$POLYGLOT_HOSTNAME_STRING $(_polyglot_prompt_dirtrim "$POLYGLOT_PROMPT_DIRTRIM")$(_polyglot_branch_status $POLYGLOT_KSH_BANG) \$ '
-        else  # Superuser
+        else # Superuser
 
             ##########################################################
             # Tests to see if the terminal is the DragonFly BSD system
@@ -753,7 +757,7 @@ _polyglot_main() {
             PS1=$PS1'$(_polyglot_exit_status $?)'
             if _polyglot_is_pdksh && ! _polyglot_is_dragonfly_console; then
                 case $POLYGLOT_UNAME in
-                    NetBSD|OpenBSD) PS1="$PS1$(print "$POLYGLOT_NP")" ;;
+                    NetBSD | OpenBSD) PS1="$PS1$(print "$POLYGLOT_NP")" ;;
                 esac
             fi
             ! _polyglot_is_dragonfly_console && PS1="$PS1\033[7m"
@@ -770,26 +774,37 @@ _polyglot_main() {
     fi
 }
 
+vterm_printf() {
+    if [ -n "$TMUX" ] && ([ "${TERM%%-*}" = "tmux" ] || [ "${TERM%%-*}" = "screen" ]); then
+        # Tell tmux to pass the escape sequences through
+        printf "\ePtmux;\e\e]%s\007\e\\" "$1"
+    elif [ "${TERM%%-*}" = "screen" ]; then
+        # GNU screen (screen, screen-256color, screen-256color-bce)
+        printf "\eP\e]%s\007\e\\" "$1"
+    else
+        printf "\e]%s\e\\" "$1"
+    fi
+}
+
 case $- in
     *i*)
         _polyglot_main
         _setup_keybindings
         ;;
-    *)
-        ;;
+    *) ;;
+
 esac
 
 # Clean up environment
 unset -f _polyglot_is_ssh _polyglot_is_busybox _polyglot_is_dtksh \
-  _polyglot_is_pdksh
-
+    _polyglot_is_pdksh
 
 case "$(uname -s)" in
-    Linux*)     machine=linux;;
-    Darwin*)    machine=mac;;
-    CYGWIN*)    machine=cygwin;;
-    MINGW*)     machine=mingw;;
-    *)          machine="UNKNOWN:${unameOut}"
+    Linux*) machine=linux ;;
+    Darwin*) machine=mac ;;
+    CYGWIN*) machine=cygwin ;;
+    MINGW*) machine=mingw ;;
+    *) machine="UNKNOWN:${unameOut}" ;;
 esac
 if [ "$machine" = "mac" ]; then
     alias ls='gls --color=auto'
@@ -801,8 +816,11 @@ alias L='ls -Flb'
 alias LL='ls -FLlb'
 alias a='alias'
 alias e="\$EDITOR"
-alias grep="grep --color"
-alias g="grep"
+if which rg >/dev/null; then
+    alias grep="rg"
+    alias g="rg"
+fi
+alias k="kubectl"
 alias h='history'
 alias j='jobs -l'
 alias l='ls -Fb'
