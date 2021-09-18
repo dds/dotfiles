@@ -7,3 +7,4 @@ build/
 private/
 .spacemacs.d/.spacemacs.env
 .doom.d/custom.el
+**/.DS_Store
