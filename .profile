@@ -1,10 +1,10 @@
 #!/bin/bash
 case "$(uname -s)" in
-    Linux*)     machine=linux;;
-    Darwin*)    machine=mac;;
-    CYGWIN*)    machine=cygwin;;
-    MINGW*)     machine=mingw;;
-    *)          machine="UNKNOWN:${unameOut}"
+Linux*) machine=linux ;;
+Darwin*) machine=mac ;;
+CYGWIN*) machine=cygwin ;;
+MINGW*) machine=mingw ;;
+*) machine="UNKNOWN:${unameOut}" ;;
 esac
 
 export EDITOR="emacsclient"
@@ -19,11 +19,11 @@ export QT_IM_MODULE="ibus"
 export XMODIFIERS="@im=ibus"
 
 if [ "$machine" = "mac" ]; then
-    export GOROOT="`brew --prefix go`/libexec"
+	export GOROOT="$(brew --prefix go)/libexec"
 fi
 
 _is_ssh() {
-    [ -n "${SSH_CONNECTION-}${SSH_CLIENT-}${SSH_TTY-}" ]
+	[ -n "${SSH_CONNECTION-}${SSH_CLIENT-}${SSH_TTY-}" ]
 }
 
 # if ( ! _is_ssh && which gpgconf && which gpg-agent ) >/dev/null; then
@@ -34,13 +34,17 @@ _is_ssh() {
 #         gpgconf --launch gpg-agent
 #     fi
 # fi
- 
-if [ -f "$HOME/.sdkman/bin/sdkman-init.sh" ]; then
-    . "$HOME/.sdkman/bin/sdkman-init.sh" 
-fi
+
+test -f "$HOME/.sdkman/bin/sdkman-init.sh" && source "$HOME/.sdkman/bin/sdkman-init.sh"
+
+test -f "$HOME/.cargo/env" && source "$HOME/.cargo/env" && export PATH="$PATH:`dirname $(rustup which rustc)`"
+
+gcloud_sdk="/opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/"
+test -f "$gcloud_sdk/path.bash.inc" && source "$gcloud_sdk/path.bash.inc"
+test -f "$gcloud_sdk/completion.bash.inc" && source "$gcloud_sdk/completion.bash.inc"
 
 if echo "$0" | grep -q bash >/dev/null; then
-    if [ -r ~/.bashrc ]; then
-        . ~/.bashrc
-    fi
+	if [ -r ~/.bashrc ]; then
+		. ~/.bashrc
+	fi
 fi
