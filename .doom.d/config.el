@@ -34,7 +34,6 @@
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type t)
 
-
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;
 ;; - `load!' for loading external *.el files relative to this one
@@ -287,7 +286,11 @@
   (set-lookup-handlers! 'go-mode
     :definition #'godef-jump
     :references #'go-guru-referrers
-    :documentation #'godef-describe))
+    :documentation #'godef-describe)
+  (setq gofmt-command "goimports")
+  (add-hook 'go-mode-hook
+            (lambda ()
+              (add-hook 'after-save-hook 'gofmt nil 'make-it-local))))
 
 (use-package! mu4e
   :hook ((mu4e-compose-mode . turn-on-flyspell)
@@ -314,8 +317,8 @@
    mu4e-headers-include-related nil
    mu4e-bookmarks
    '(
+     ("maildir:/gmail/inbox and flag:unread" "personal unread" ?g)
      ("not (flag:sent or maildir:/.*\/archive/ or maildir:/.*\/sent/ or %hidden)" "inbox" ?i)
-     ("flag:unread and not %hidden" "unread" ?u)
      ("flag:flagged" "flagged" ?f)
      ("%recent and not %hidden" "all mail" ?a)
      )

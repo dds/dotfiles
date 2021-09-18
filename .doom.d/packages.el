@@ -20,6 +20,8 @@
 (package! org-journal)
 (package! unfill)
 (package! visual-fill-column)
+(package! mozc)
+
 ;; To install SOME-PACKAGE from MELPA, ELPA or emacsmirror:
 ;(package! some-package)
 
