@@ -22,18 +22,14 @@ if [ "$machine" = "mac" ]; then
 	export GOROOT="$(brew --prefix go)/libexec"
 fi
 
-_is_ssh() {
-	[ -n "${SSH_CONNECTION-}${SSH_CLIENT-}${SSH_TTY-}" ]
-}
-
-# if ( ! _is_ssh && which gpgconf && which gpg-agent ) >/dev/null; then
-#     declare SSH_AUTH_SOCK
-#     SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
-#     if [ $? -eq 0 ]; then
-#         export SSH_AUTH_SOCK
-#         gpgconf --launch gpg-agent
-#     fi
-# fi
+if ( which gpgconf && which gpg-agent ) >/dev/null; then
+    declare SSH_AUTH_SOCK
+    SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+    if [ $? -eq 0 ]; then
+        export SSH_AUTH_SOCK
+        gpgconf --launch gpg-agent
+    fi
+fi
 
 test -f "$HOME/.sdkman/bin/sdkman-init.sh" && source "$HOME/.sdkman/bin/sdkman-init.sh"
 
