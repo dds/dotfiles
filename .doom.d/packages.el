@@ -21,6 +21,7 @@
 (package! unfill)
 (package! visual-fill-column)
 (package! mozc)
+(package! nyan-mode)
 
 ;; To install SOME-PACKAGE from MELPA, ELPA or emacsmirror:
 ;(package! some-package)
