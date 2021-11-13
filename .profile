@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 case "$(uname -s)" in
 Linux*) machine=linux ;;
 Darwin*) machine=mac ;;

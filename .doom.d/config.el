@@ -58,7 +58,7 @@
 ;;
 
 ;; Add homebrew emacs lisp to load path
-(let ((default-directory "/opt/homebrew/share/emacs/site-lisp/"))
+(let ((default-directory "/usr/local/share/emacs/site-lisp/"))
   (normal-top-level-add-subdirs-to-load-path))
 
 (defun dds-org/post-init-org ()

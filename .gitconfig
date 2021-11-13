@@ -1,5 +1,5 @@
 [user]
-	name = David D. Smith
+	name = David Smith
 [alias]
 	lola = log --graph --decorate --pretty=oneline --abbrev-commit
 	lol = log --graph --decorate --pretty=oneline --abbrev-commit
@@ -13,7 +13,5 @@
 	default = simple
 [status]
 	submoduleSummary = true
-[url "git@github.com:"]
-	insteadOf = https://github.com/
 [init]
 	defaultBranch = main
