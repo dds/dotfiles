@@ -1,5 +1,6 @@
 [user]
 	name = David Smith
+	email = davidsmith@acm.org
 [alias]
 	lola = log --graph --decorate --pretty=oneline --abbrev-commit
 	lol = log --graph --decorate --pretty=oneline --abbrev-commit
