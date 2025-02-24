@@ -836,8 +836,10 @@ alias tl='treel'
 alias ot='popd'
 alias to='pushd'
 
+eval "$(keychain --eval --agents ssh $HOME/.ssh/id_ed25519)"
+
+
 # BEGIN: Block added by chef, to set environment strings
 # Please see https://fburl.com/AndroidProvisioning if you do not use bash
 # or if you would rather this bit of code 'live' somewhere else
-. ~/.fbchef/environment
 # END: Block added by chef
