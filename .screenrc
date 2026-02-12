@@ -141,8 +141,8 @@ bind ^] paste [.]
 # hardstatus alwaysignore
 # hardstatus alwayslastline "%w"
 
-caption always "%{= wk} %{= Ck}%H%{= wk} | %{= Gk}%c%{= wk} | %{= Yk}%Y-%m-%d%{= wk} |%= Load: %l "
-hardstatus alwayslastline "%{= wk} %-Lw%50>%{= kG} %n*%f %t %{= wk}%+Lw%< "
+caption always "%{= Kk} %{+b Yk}%H%{-b Kk} | %{Ck}%c%{Kk} | %{wk}%Y-%m-%d%{Kk} |%=%{Gk} %l "
+hardstatus alwayslastline "%{= Kk} %-Lw%{+b Yk} %n*%f %t %{-b Kk} %+Lw "
 
 ## Local Variables:
 ## mode: conf
