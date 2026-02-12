@@ -1,3 +1,6 @@
+export EDITOR=vim
+export VISUAL=vim
+
 test -f "$HOME/.sdkman/bin/sdkman-init.sh" && source "$HOME/.sdkman/bin/sdkman-init.sh"
 
 test -f "$HOME/.cargo/env" && source "$HOME/.cargo/env"
