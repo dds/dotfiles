@@ -18,7 +18,8 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-unimpaired'
-Plug 'ghifarit53/tokyonight-vim'
+Plug 'nordtheme/vim', { 'as': 'nord' }
+Plug 'morhetz/gruvbox'
 Plug 'mbbill/undotree'
 Plug 'jiangmiao/auto-pairs'
 Plug 'sheerun/vim-polyglot'
@@ -40,8 +41,7 @@ if $COLORTERM ==# 'truecolor' || $COLORTERM ==# '24bit'
   set termguicolors
 endif
 set background=dark
-let g:tokyonight_style = 'night'
-silent! colorscheme tokyonight
+silent! colorscheme nord
 set number
 set relativenumber
 set signcolumn=yes
