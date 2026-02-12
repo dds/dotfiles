@@ -1,5 +1,5 @@
-source /etc/bashrc
-source /usr/facebook/ops/rc/master.bashrc
+test -f /etc/bashrc && source /etc/bashrc
+test -f /usr/facebook/ops/rc/master.bashrc && source /usr/facebook/ops/rc/master.bashrc
 
 ### Sensible Bash - An attempt at saner Bash defaults
 # Maintainer: mrzool <http://mrzool.cc>
