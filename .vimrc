@@ -35,7 +35,6 @@ set termguicolors
 set background=dark
 silent! colorscheme retrobox
 set number
-set cursorline
 set signcolumn=yes
 set laststatus=2
 set showcmd
