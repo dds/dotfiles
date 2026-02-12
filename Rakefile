@@ -4,6 +4,8 @@ here = File.dirname(__FILE__)
 build = File.join(here, 'build')
 tools = File.join(here, 'tools')
 bin = File.join(here, 'bin')
+is_linux = RbConfig::CONFIG['host_os'] =~ /linux/i
+is_mac = RbConfig::CONFIG['host_os'] =~ /darwin/i
 
 # These directories will be created in the target
 dirs = FileList[
@@ -22,9 +24,13 @@ symlinks = FileList[
   '.screenrc',
   '.spacemacs.d',
   '.gitconfig',
-  '.Xresources',
   '.gnupg/gpg-agent.conf',
   '.gnupg/gpg.conf',
+]
+
+# Linux-only symlinks (X11, desktop entries)
+linux_symlinks = FileList[
+  '.Xresources',
   '.local/share/applications/org-protocol.desktop',
 ]
 
@@ -71,46 +77,51 @@ task :install, [:prefix] do |t, args|
   generated.each do |f|
     from = File.join(here, f)
     to = File.join(args.prefix, File.basename(f))
-    File.exists? from and install(from, to)
+    File.exist?(from) and install(from, to)
   end
 
   symlinks.each do |f|
     from = File.join(here, f)
     to = File.join(args.prefix, f)
     rm_f(to)
-    File.exists? from and ln_sf(from, to)
+    File.exist?(from) and ln_sf(from, to)
   end
 
-  systemd_dir = '.config/systemd/user'
-  prefix_systemd_dir = File.join(args.prefix, systemd_dir)
-  mkdir_p prefix_systemd_dir
-  local_systemd_dir = File.join(here, systemd_dir)
-  Dir.glob(File.join(local_systemd_dir, '*')).each do |f| 
-    to = File.join(prefix_systemd_dir, File.basename(f))
-    ln_sf(f, to)
-  end
+  if is_linux
+    linux_symlinks.each do |f|
+      from = File.join(here, f)
+      to = File.join(args.prefix, f)
+      rm_f(to)
+      File.exist?(from) and ln_sf(from, to)
+    end
 
-  autostart_dir = '.config/autostart'
-  prefix_autostart_dir = File.join(args.prefix, autostart_dir)
-  mkdir_p prefix_autostart_dir
-  local_autostart_dir = File.join(here, autostart_dir)
-  Dir.glob(File.join(local_autostart_dir, '*')).each do |f|
-    to = File.join(prefix_autostart_dir, File.basename(f))
-    ln_sf(f, to)
+    systemd_dir = '.config/systemd/user'
+    prefix_systemd_dir = File.join(args.prefix, systemd_dir)
+    mkdir_p prefix_systemd_dir
+    local_systemd_dir = File.join(here, systemd_dir)
+    Dir.glob(File.join(local_systemd_dir, '*')).each do |f|
+      to = File.join(prefix_systemd_dir, File.basename(f))
+      ln_sf(f, to)
+    end
+
+    autostart_dir = '.config/autostart'
+    prefix_autostart_dir = File.join(args.prefix, autostart_dir)
+    mkdir_p prefix_autostart_dir
+    local_autostart_dir = File.join(here, autostart_dir)
+    Dir.glob(File.join(local_autostart_dir, '*')).each do |f|
+      to = File.join(prefix_autostart_dir, File.basename(f))
+      ln_sf(f, to)
+    end
+
+    systemd_units.each do |f|
+      sh %{ systemctl --user enable #{f} || true }
+    end
+
+    sh %{ update-desktop-database #{args.prefix}/.local/share/applications }
   end
 
   Dir.glob(File.join(bin, '*')).each do |f|
     to = File.join(args.prefix, '.local/bin')
     ln_sf(f, to)
   end
-
-  # TODO
-  # For each line of these SSH keys, add to target keys if not already there
-  # ssh_keys = File.join(here, '.ssh/authorized_keys')
-
-  systemd_units.each do |f|
-    sh %{ systemctl --user enable #{f} || true }
-  end
-
-  sh %{ update-desktop-database #{args.prefix}/.local/share/applications }
 end
