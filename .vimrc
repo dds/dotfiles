@@ -17,7 +17,11 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
-Plug 'nordtheme/vim', { 'as': 'nord' }
+Plug 'tpope/vim-unimpaired'
+Plug 'morhetz/gruvbox'
+Plug 'mbbill/undotree'
+Plug 'jiangmiao/auto-pairs'
+Plug 'sheerun/vim-polyglot'
 call plug#end()
 
 " --- General ---
@@ -34,7 +38,7 @@ endif
 " --- Appearance ---
 set termguicolors
 set background=dark
-silent! colorscheme nord
+silent! colorscheme gruvbox
 set number
 set relativenumber
 set signcolumn=yes
