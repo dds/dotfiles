@@ -126,3 +126,7 @@ unset -f _polyglot_is_ssh _polyglot_is_busybox _polyglot_is_dtksh \
 
 # Aliases, platform detection, keychain
 [ -r ~/.bash/aliases.bash ] && . ~/.bash/aliases.bash
+
+source /etc/bashrc
+source /usr/facebook/ops/rc/master.bashrc
+

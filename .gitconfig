@@ -16,3 +16,5 @@
 	submoduleSummary = true
 [init]
 	defaultBranch = main
+[includeIf "hasconfig:remote.*.url:**fbinfra.net**"]
+	path = ~/.gitconfig-fbinfra

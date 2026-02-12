@@ -24,6 +24,7 @@ symlinks = FileList[
   '.screenrc',
   '.spacemacs.d',
   '.gitconfig',
+  '.gitconfig-fbinfra',
   '.dircolors',
   '.vimrc',
   '.zshrc',
