@@ -1,28 +1,4 @@
-" Minimal dark-mode .vimrc
-" Auto-installs vim-plug and plugins on first run
-
-" --- Bootstrap vim-plug ---
-let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
-if empty(glob(data_dir . '/autoload/plug.vim'))
-  silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs
-    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
-endif
-
-" --- Plugins ---
-call plug#begin('~/.vim/plugged')
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-repeat'
-Plug 'tpope/vim-unimpaired'
-Plug 'morhetz/gruvbox'
-Plug 'mbbill/undotree'
-Plug 'jiangmiao/auto-pairs'
-Plug 'sheerun/vim-polyglot'
-call plug#end()
+" Minimal dark-mode .vimrc — no external plugins
 
 " --- General ---
 filetype plugin indent on
@@ -101,16 +77,10 @@ vnoremap > >gv
 " File explorer (netrw)
 nnoremap <leader>n :Explore<CR>
 
-" fzf
-nnoremap <leader>p :Files<CR>
-nnoremap <leader>b :Buffers<CR>
-nnoremap <leader>g :Rg<CR>
-nnoremap <leader>/ :BLines<CR>
-
-" Fugitive
-nnoremap <leader>gs :Git<CR>
-nnoremap <leader>gd :Gdiffsplit<CR>
-nnoremap <leader>gb :Git blame<CR>
+" Built-in file/buffer navigation
+nnoremap <leader>p :find *
+nnoremap <leader>b :ls<CR>:b<Space>
+nnoremap <leader>/ :g/
 
 " --- Strip trailing whitespace on save ---
 autocmd BufWritePre * :%s/\s\+$//e
