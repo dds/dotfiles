@@ -1,3 +1,6 @@
+source /etc/bashrc
+source /usr/facebook/ops/rc/master.bashrc
+
 ### Sensible Bash - An attempt at saner Bash defaults
 # Maintainer: mrzool <http://mrzool.cc>
 # Repository: https://github.com/mrzool/bash-sensible
