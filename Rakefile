@@ -25,6 +25,7 @@ symlinks = FileList[
   '.spacemacs.d',
   '.gitconfig',
   '.dircolors',
+  '.vimrc',
   '.gnupg/gpg-agent.conf',
   '.gnupg/gpg.conf',
 ]
