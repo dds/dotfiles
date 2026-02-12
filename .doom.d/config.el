@@ -57,9 +57,10 @@
 ;; (advice-add 'spacemacs/python-start-or-switch-repl :around 'dds//projectilize)
 ;;
 
-;; Add homebrew emacs lisp to load path
+;; Add homebrew emacs lisp to load path (macOS only)
 (let ((default-directory "/usr/local/share/emacs/site-lisp/"))
-  (normal-top-level-add-subdirs-to-load-path))
+  (when (file-directory-p default-directory)
+    (normal-top-level-add-subdirs-to-load-path)))
 
 (defun dds-org/post-init-org ()
   (use-package org
