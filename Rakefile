@@ -119,7 +119,7 @@ task :install, [:prefix] do |t, args|
       sh %{ systemctl --user enable #{f} || true }
     end
 
-    sh %{ update-desktop-database #{args.prefix}/.local/share/applications }
+    sh %{ update-desktop-database #{args.prefix}/.local/share/applications || true }
   end
 
   Dir.glob(File.join(bin, '*')).each do |f|
