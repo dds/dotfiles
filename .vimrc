@@ -16,7 +16,8 @@ if $COLORTERM ==# 'truecolor' || $COLORTERM ==# '24bit'
   set termguicolors
 endif
 set background=dark
-silent! colorscheme retrobox
+silent! colorscheme desert
+highlight Normal guibg=NONE ctermbg=NONE
 set number
 set relativenumber
 set signcolumn=yes
