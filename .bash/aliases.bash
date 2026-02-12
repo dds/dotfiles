@@ -8,7 +8,11 @@ case "$(uname -s)" in
 esac
 
 # Colors
-[ -f ~/.dircolors ] && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+if command -v dircolors &>/dev/null; then
+  [ -f ~/.dircolors ] && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+elif command -v gdircolors &>/dev/null; then
+  [ -f ~/.dircolors ] && eval "$(gdircolors -b ~/.dircolors)" || eval "$(gdircolors -b)"
+fi
 
 # Platform-specific aliases
 if [ "$machine" = "mac" ]; then

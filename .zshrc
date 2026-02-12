@@ -37,7 +37,11 @@ bindkey '^[[A' history-beginning-search-backward
 bindkey '^[[B' history-beginning-search-forward
 
 ## Colors
-[ -f ~/.dircolors ] && eval "$(dircolors -b ~/.dircolors)" 2>/dev/null
+if command -v dircolors &>/dev/null; then
+  [ -f ~/.dircolors ] && eval "$(dircolors -b ~/.dircolors)"
+elif command -v gdircolors &>/dev/null; then
+  [ -f ~/.dircolors ] && eval "$(gdircolors -b ~/.dircolors)"
+fi
 
 ## Prompt — simple git-aware prompt, no dependencies
 autoload -Uz vcs_info
