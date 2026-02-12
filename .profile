@@ -39,4 +39,3 @@ command -v rustup >/dev/null && export PATH="$PATH:$(dirname "$(rustup which rus
 gcloud_sdk="/opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/"
 test -f "$gcloud_sdk/path.bash.inc" && source "$gcloud_sdk/path.bash.inc"
 test -f "$gcloud_sdk/completion.bash.inc" && source "$gcloud_sdk/completion.bash.inc"
-
