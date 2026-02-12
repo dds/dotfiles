@@ -6,7 +6,6 @@ monitor on
 silence on
 vbell_msg "--beep--"
 term screen-256color
-rendition monitor "+b ck"
 
 # This is how one can set a reattach password:
 # password ODSJQf.4IJN7E    # "1234"
@@ -142,8 +141,11 @@ bind ^] paste [.]
 # hardstatus alwaysignore
 # hardstatus alwayslastline "%w"
 
-caption always "%{= wk} %{+b Yk}%H%{-b wk}:%{Mk}%S%{wk} %{Kk}|%{+b Ck} %c %{-b ck}%Y-%m-%d %{wk}%{Kk}|%{wk}%=%{Gk} %l %?%{Ck}%u%? "
-hardstatus alwayslastline "%{= wk} %-Lw%{+b Yk} %n*%f %t %{-b wk} %+Lw "
+# Source version-specific color config.
+# The Rakefile symlinks the appropriate file based on screen version:
+#   .screenrc.colors.v5     -> Screen 5.0+ (truecolor, hex colors)
+#   .screenrc.colors.legacy -> Screen <5.0 (letter-based colors)
+source $HOME/.screenrc.colors
 
 ## Local Variables:
 ## mode: conf

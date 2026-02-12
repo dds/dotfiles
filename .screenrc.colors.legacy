@@ -1,0 +1,4 @@
+# Screen <5.0 color configuration (letter-based notation)
+rendition monitor "+b ck"
+caption always "%{= wk} %{+b Yk}%H%{-b wk}:%{Mk}%S%{wk} %{Kk}|%{+b Ck} %c %{-b ck}%Y-%m-%d %{wk}%{Kk}|%{wk}%=%{Gk} %l %?%{Ck}%u%? "
+hardstatus alwayslastline "%{= wk} %-Lw%{+b Yk} %n*%f %t %{-b wk} %+Lw "

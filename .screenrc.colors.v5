@@ -1,0 +1,5 @@
+# Screen 5.0+ color configuration (truecolor, hex notation)
+truecolor on
+rendition monitor "+b #00AAAA;#333333"
+caption always "%{= #FFFFFF;#333333} %{#999999;#333333}│ %{+b #FFFF00;#333333}%H%{-b #FFFFFF;#333333}:%{#FF00FF;#333333}%S %{#999999;#333333}│ %{+b #00FFFF;#333333}%c %{-b #00AAAA;#333333}%Y-%m-%d %{#999999;#333333}│%{#FFFFFF;#333333}%=%{#00FF00;#333333} %l %?%{#00FFFF;#333333}%u%? %{#999999;#333333}│ "
+hardstatus alwayslastline "%{= #FFFFFF;#333333} %-Lw %{#999999;#333333}│%{+b #FFFF00;#333333} %n*%f %t %{#999999;#333333}│%{-b #FFFFFF;#333333} %+Lw "

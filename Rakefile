@@ -134,4 +134,19 @@ task :install, [:prefix] do |t, args|
     to = File.join(args.prefix, '.local/bin')
     ln_sf(f, to)
   end
+
+  # Detect screen version and symlink the appropriate colors config
+  screen_v5 = false
+  begin
+    ver = `screen --version 2>/dev/null`
+    if ver =~ /Screen version (\d+)/
+      screen_v5 = $1.to_i >= 5
+    end
+  rescue
+  end
+  colors_src = screen_v5 ? '.screenrc.colors.v5' : '.screenrc.colors.legacy'
+  colors_from = File.join(here, colors_src)
+  colors_to = File.join(args.prefix, '.screenrc.colors')
+  rm_f(colors_to)
+  ln_sf(colors_from, colors_to)
 end
