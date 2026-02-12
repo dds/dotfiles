@@ -52,4 +52,4 @@ fi
 
 # SSH keychain (quiet unless error)
 command -v keychain >/dev/null 2>&1 && \
-    eval "$(keychain --eval --quiet "$HOME/.ssh/id_ed25519")"
+    eval "$(keychain --eval --quiet "$HOME/.ssh/id_ed25519")" || true
