@@ -4,10 +4,10 @@ Linux*) machine=linux ;;
 Darwin*) machine=mac ;;
 CYGWIN*) machine=cygwin ;;
 MINGW*) machine=mingw ;;
-*) machine="UNKNOWN:${unameOut}" ;;
+*) machine="UNKNOWN:$(uname -s)" ;;
 esac
 
-export EDITOR="emacsclient"
+export EDITOR="vim"
 export GOPATH=~/code/go
 export GONOSUMDB=github.com/NerdWallet
 export GPG_KEY=0x22B8564124FA9655
@@ -33,14 +33,10 @@ fi
 
 test -f "$HOME/.sdkman/bin/sdkman-init.sh" && source "$HOME/.sdkman/bin/sdkman-init.sh"
 
-test -f "$HOME/.cargo/env" && source "$HOME/.cargo/env" && export PATH="$PATH:`dirname $(rustup which rustc)`"
+test -f "$HOME/.cargo/env" && source "$HOME/.cargo/env"
+command -v rustup >/dev/null && export PATH="$PATH:$(dirname "$(rustup which rustc)")"
 
 gcloud_sdk="/opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/"
 test -f "$gcloud_sdk/path.bash.inc" && source "$gcloud_sdk/path.bash.inc"
 test -f "$gcloud_sdk/completion.bash.inc" && source "$gcloud_sdk/completion.bash.inc"
 
-if echo "$0" | grep -q bash >/dev/null; then
-	if [ -r ~/.bashrc ]; then
-		. ~/.bashrc
-	fi
-fi

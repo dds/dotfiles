@@ -1,0 +1,5 @@
+# .bash_profile — sourced by bash login shells
+# Sources .profile (env vars) then .bashrc (interactive settings)
+
+[ -r ~/.profile ] && . ~/.profile
+[ -r ~/.bashrc ] && . ~/.bashrc

@@ -12,11 +12,11 @@ dirs = FileList[
   '.ssh',
   '.gnupg',
   '.local/bin',
-  '.local/share/applications',
 ]
 
 # These will each be installed into the target
 symlinks = FileList[
+  '.bash',
   '.bashrc',
   '.bash_profile',
   '.profile',
@@ -26,6 +26,7 @@ symlinks = FileList[
   '.gitconfig',
   '.dircolors',
   '.vimrc',
+  '.zshrc',
   '.gnupg/gpg-agent.conf',
   '.gnupg/gpg.conf',
 ]
@@ -53,11 +54,15 @@ CLEAN.include(generated)
 
 
 task :build do |t|
+  accounts = File.join(here, 'private/gmailaccounts')
+  unless File.exist?(accounts)
+    abort "#{accounts} not found. Create it with one Gmail address per line."
+  end
+
   mkdir_p build
 
   mbsyncrc = File.join(build, '.mbsyncrc')
   genmbsyncrc = File.join(tools, 'genmbsyncrc')
-  accounts = File.join(here, 'private/gmailaccounts')
   sh %{ #{genmbsyncrc} < #{accounts} >| #{mbsyncrc} }
 
   msmtprc = File.join(build, '.msmtprc')
@@ -90,6 +95,8 @@ task :install, [:prefix] do |t, args|
   end
 
   if is_linux
+    mkdir_p File.join(args.prefix, '.local/share/applications')
+
     linux_symlinks.each do |f|
       from = File.join(here, f)
       to = File.join(args.prefix, f)
