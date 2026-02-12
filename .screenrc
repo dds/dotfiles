@@ -6,6 +6,7 @@ monitor on
 silence on
 vbell_msg "--beep--"
 term screen-256color
+rendition monitor "+b ck"
 
 # This is how one can set a reattach password:
 # password ODSJQf.4IJN7E    # "1234"
