@@ -41,7 +41,7 @@ if $COLORTERM ==# 'truecolor' || $COLORTERM ==# '24bit'
   set termguicolors
 endif
 set background=dark
-silent! colorscheme nord
+silent! colorscheme gruvbox
 set number
 set relativenumber
 set signcolumn=yes
