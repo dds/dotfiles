@@ -142,7 +142,7 @@ bind ^] paste [.]
 # hardstatus alwaysignore
 # hardstatus alwayslastline "%w"
 
-caption always "%{= Kk} %{+b Yk}%H%{-b Kk} | %{Ck}%c%{Kk} | %{wk}%Y-%m-%d%{Kk} |%=%{Gk} %l "
+caption always "%{= wk} %{+b Yk}%H%{-b wk}:%{Mk}%S%{wk} %{Kk}|%{+b Ck} %c %{-b ck}%Y-%m-%d %{wk}%{Kk}|%{wk}%=%{Gk} %l %?%{Ck}%u%? "
 hardstatus alwayslastline "%{= wk} %-Lw%{+b Yk} %n*%f %t %{-b wk} %+Lw "
 
 ## Local Variables:
