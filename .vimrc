@@ -17,6 +17,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
+Plug 'ghifarit53/tokyonight-vim'
 call plug#end()
 
 " --- General ---
@@ -33,7 +34,8 @@ endif
 " --- Appearance ---
 set termguicolors
 set background=dark
-silent! colorscheme retrobox
+let g:tokyonight_style = 'night'
+silent! colorscheme tokyonight
 set number
 set relativenumber
 set signcolumn=yes
