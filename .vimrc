@@ -36,7 +36,9 @@ if !isdirectory(expand('~/.vim/undodir'))
 endif
 
 " --- Appearance ---
-set termguicolors
+if $COLORTERM ==# 'truecolor' || $COLORTERM ==# '24bit'
+  set termguicolors
+endif
 set background=dark
 silent! colorscheme gruvbox
 set number
