@@ -46,7 +46,6 @@ brew "google-cloud-sdk"
 brew "istioctl"
 brew "kubernetes-cli"
 brew "minikube"
-brew "vault"
 
 # Editors
 brew "vim"
