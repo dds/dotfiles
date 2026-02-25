@@ -85,6 +85,9 @@ alias tl='treel'
 
 (( $+commands[rg] )) && alias grep="rg" && alias g="rg"
 
+# Fix TERM for SSH — remote hosts lack xterm-ghostty terminfo
+ssh() { TERM=xterm-256color command ssh "$@"; }
+
 ## Keychain
 (( $+commands[keychain] )) && \
     eval "$(keychain --eval --quiet --agents ssh "$HOME/.ssh/id_ed25519")"
