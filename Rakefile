@@ -11,6 +11,7 @@ is_mac = RbConfig::CONFIG['host_os'] =~ /darwin/i
 dirs = FileList[
   '.ssh',
   '.gnupg',
+  '.config/ghostty',
   '.local/bin',
 ]
 
@@ -30,6 +31,7 @@ symlinks = FileList[
   '.zshrc',
   '.gnupg/gpg-agent.conf',
   '.gnupg/gpg.conf',
+  '.config/ghostty/config',
 ]
 
 # Linux-only symlinks (X11, desktop entries)

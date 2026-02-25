@@ -54,9 +54,6 @@ if command -v rg >/dev/null 2>&1; then
     alias g="rg"
 fi
 
-# Fix TERM for SSH — remote hosts lack xterm-ghostty terminfo
-ssh() { TERM=xterm-256color command ssh "$@"; }
-
 # SSH keychain (quiet unless error)
 command -v keychain >/dev/null 2>&1 && \
     eval "$(keychain --eval --quiet "$HOME/.ssh/id_ed25519")" || true
