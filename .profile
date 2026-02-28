@@ -1,3 +1,6 @@
+# Homebrew — prepend to PATH so brew packages take precedence over system
+[ -x /opt/homebrew/bin/brew ] && eval "$(/opt/homebrew/bin/brew shellenv)"
+
 export PATH="$HOME/.local/bin:$PATH"
 export EDITOR=vim
 export VISUAL=vim
