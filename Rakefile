@@ -1,8 +1,4 @@
-require 'rake/clean'
-
 here = File.dirname(__FILE__)
-build = File.join(here, 'build')
-tools = File.join(here, 'tools')
 bin = File.join(here, 'bin')
 is_linux = RbConfig::CONFIG['host_os'] =~ /linux/i
 is_mac = RbConfig::CONFIG['host_os'] =~ /darwin/i
@@ -42,37 +38,10 @@ linux_symlinks = FileList[
 
 # Systemd units to enable
 systemd_units = [
-  'mbsync.timer',
   'keybase.service',
   'kbfs.service',
   'syncthing.service',
 ]
-
-# These generated files will be copied into the target
-generated = FileList[
-  'build/.msmtprc',
-  'build/.mbsyncrc'
-]
-CLEAN.include(generated)
-
-
-task :build do |t|
-  accounts = File.join(here, 'private/gmailaccounts')
-  unless File.exist?(accounts)
-    abort "#{accounts} not found. Create it with one Gmail address per line."
-  end
-
-  mkdir_p build
-
-  mbsyncrc = File.join(build, '.mbsyncrc')
-  genmbsyncrc = File.join(tools, 'genmbsyncrc')
-  sh %{ #{genmbsyncrc} < #{accounts} >| #{mbsyncrc} }
-
-  msmtprc = File.join(build, '.msmtprc')
-  genmsmtprc = File.join(tools, 'genmsmtprc')
-  sh %{ #{genmsmtprc} < #{accounts} >| #{msmtprc} }
-end
-
 
 task :install, [:prefix] do |t, args|
   args.with_defaults(:prefix => "target")
@@ -82,12 +51,6 @@ task :install, [:prefix] do |t, args|
   dirs.each do |d|
     dest = File.join(args.prefix, d)
     mkdir_p dest
-  end
-
-  generated.each do |f|
-    from = File.join(here, f)
-    to = File.join(args.prefix, File.basename(f))
-    File.exist?(from) and install(from, to)
   end
 
   symlinks.each do |f|
