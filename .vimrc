@@ -18,7 +18,6 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-unimpaired'
-Plug 'joshdick/onedark.vim'
 Plug 'morhetz/gruvbox'
 Plug 'mbbill/undotree'
 Plug 'jiangmiao/auto-pairs'
@@ -41,7 +40,8 @@ if $COLORTERM ==# 'truecolor' || $COLORTERM ==# '24bit'
   set termguicolors
 endif
 set background=dark
-silent! colorscheme onedark
+let g:gruvbox_contrast_dark = 'medium'
+silent! colorscheme gruvbox
 set number
 set relativenumber
 set signcolumn=yes
