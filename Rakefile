@@ -8,6 +8,7 @@ dirs = FileList[
   '.ssh',
   '.gnupg',
   '.config/kitty',
+  '.config/Code/User',
   '.local/bin',
 ]
 
@@ -29,6 +30,7 @@ symlinks = FileList[
   '.gnupg/gpg-agent.conf',
   '.gnupg/gpg.conf',
   '.config/kitty/kitty.conf',
+  '.config/Code/User/settings.json',
 ]
 
 # Linux-only symlinks (X11, desktop entries)
