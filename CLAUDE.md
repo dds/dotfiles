@@ -5,7 +5,7 @@ Personal dotfiles managed with Rake. Symlinks are created from dotfiles repo int
 ## Structure
 
 - `Rakefile` — install task creates directories and symlinks into a target prefix (default `$HOME`)
-- `.config/alacritty/` — Alacritty terminal emulator config
+- `.config/kitty/` — Kitty terminal emulator config
 - `.aerospace.toml` — AeroSpace tiling window manager config (macOS)
 - `.bash_profile` / `.bashrc` / `.profile` — shell config
 - `.screenrc` — GNU Screen config (version-specific color configs: `.screenrc.colors.v5` / `.screenrc.colors.legacy`)
@@ -25,7 +25,7 @@ brew bundle
 
 ## Terminal & WM
 
-- **Terminal**: Alacritty
+- **Terminal**: Kitty
 - **Window manager**: AeroSpace (alt-based sway-inspired keybindings)
 - **Multiplexer**: GNU Screen
 
