@@ -61,7 +61,7 @@ alt-shift-space = 'layout floating tiling'
 alt-shift-q = 'close'
 
 # Terminal (like sway: $mod+Return)
-alt-enter = 'exec-and-forget open -na kitty'
+alt-enter = 'exec-and-forget pgrep -x kitty && open -a kitty || open -na kitty'
 
 # Workspaces (like sway: $mod+1-9)
 alt-1 = 'workspace 1'
