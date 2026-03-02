@@ -28,3 +28,8 @@ brew bundle
 - **Terminal**: Alacritty
 - **Window manager**: AeroSpace (alt-based sway-inspired keybindings)
 - **Multiplexer**: GNU Screen
+
+## Pending
+
+- Push to origin (2 commits ahead of `origin/master`): run `git push origin master`
+</content>
