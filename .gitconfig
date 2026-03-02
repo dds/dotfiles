@@ -18,3 +18,11 @@
 	defaultBranch = main
 [includeIf "hasconfig:remote.*.url:**fbinfra.net**"]
 	path = ~/.gitconfig-fbinfra
+[http "https://git.internal.tfbnw.net"]
+	sslCert = /var/facebook/credentials/dds/x509/dds.pem
+	sslKey = /var/facebook/credentials/dds/x509/dds.pem
+[http "https://mononoke-git-lfs.internal.tfbnw.net"]
+	sslCert = /var/facebook/credentials/dds/x509/dds.pem
+	sslKey = /var/facebook/credentials/dds/x509/dds.pem
+[http "https://manifold.c2p.facebook.net"]
+	sslCert = /var/facebook/credentials/dds/x509/dds.pem
