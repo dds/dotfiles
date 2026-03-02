@@ -7,7 +7,7 @@ is_mac = RbConfig::CONFIG['host_os'] =~ /darwin/i
 dirs = FileList[
   '.ssh',
   '.gnupg',
-  '.config/ghostty',
+  '.config/alacritty',
   '.local/bin',
 ]
 
@@ -20,6 +20,7 @@ symlinks = FileList[
   '.doom.d',
   '.screenrc',
   '.spacemacs.d',
+  '.aerospace.toml',
   '.gitconfig',
   '.gitconfig-fbinfra',
   '.dircolors',
@@ -27,7 +28,7 @@ symlinks = FileList[
   '.zshrc',
   '.gnupg/gpg-agent.conf',
   '.gnupg/gpg.conf',
-  '.config/ghostty/config',
+  '.config/alacritty/alacritty.toml',
 ]
 
 # Linux-only symlinks (X11, desktop entries)

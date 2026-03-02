@@ -1,0 +1,125 @@
+# Aerospace - tiling window manager for macOS
+# Sway-inspired keybindings
+
+# Start Aerospace at login
+start-at-login = true
+
+# Normalizations
+enable-normalization-flatten-containers = true
+enable-normalization-opposite-orientation-for-nested-containers = true
+
+# Mouse follows focus (like sway focus_follows_mouse)
+on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
+on-focus-changed = ['move-mouse window-lazy-center']
+
+# Accordion layout padding (like sway inner_gaps)
+accordion-padding = 20
+
+# Default root container layout (like sway default_orientation)
+default-root-container-layout = 'tiles'
+default-root-container-orientation = 'auto'
+
+# Gaps (like sway gaps)
+[gaps]
+inner.horizontal = 8
+inner.vertical = 8
+outer.left = 8
+outer.bottom = 8
+outer.top = 8
+outer.right = 8
+
+# Main mode keybindings (alt is mod, like sway's Mod4/Super but alt works better on macOS)
+[mode.main.binding]
+
+# Focus (like sway: $mod+h/j/k/l)
+alt-h = 'focus left'
+alt-j = 'focus down'
+alt-k = 'focus up'
+alt-l = 'focus right'
+
+# Move windows (like sway: $mod+Shift+h/j/k/l)
+alt-shift-h = 'move left'
+alt-shift-j = 'move down'
+alt-shift-k = 'move up'
+alt-shift-l = 'move right'
+
+# Join with (like sway split, but works with normalizations enabled)
+alt-slash = 'join-with right'
+alt-comma = 'join-with down'
+
+# Fullscreen (like sway: $mod+f)
+alt-f = 'fullscreen'
+
+# Layout toggle (like sway: $mod+e / $mod+s / $mod+w)
+alt-e = 'layout tiles horizontal vertical'
+alt-s = 'layout accordion horizontal vertical'
+
+# Float toggle (like sway: $mod+Shift+space)
+alt-shift-space = 'layout floating tiling'
+
+# Close window (like sway: $mod+Shift+q)
+alt-shift-q = 'close'
+
+# Terminal (like sway: $mod+Return)
+alt-enter = 'exec-and-forget open -na Alacritty'
+
+# Workspaces (like sway: $mod+1-9)
+alt-1 = 'workspace 1'
+alt-2 = 'workspace 2'
+alt-3 = 'workspace 3'
+alt-4 = 'workspace 4'
+alt-5 = 'workspace 5'
+alt-6 = 'workspace 6'
+alt-7 = 'workspace 7'
+alt-8 = 'workspace 8'
+alt-9 = 'workspace 9'
+
+# Move window to workspace (like sway: $mod+Shift+1-9)
+alt-shift-1 = 'move-node-to-workspace 1'
+alt-shift-2 = 'move-node-to-workspace 2'
+alt-shift-3 = 'move-node-to-workspace 3'
+alt-shift-4 = 'move-node-to-workspace 4'
+alt-shift-5 = 'move-node-to-workspace 5'
+alt-shift-6 = 'move-node-to-workspace 6'
+alt-shift-7 = 'move-node-to-workspace 7'
+alt-shift-8 = 'move-node-to-workspace 8'
+alt-shift-9 = 'move-node-to-workspace 9'
+
+# Resize mode (like sway: $mod+r)
+alt-r = 'mode resize'
+
+# Service mode for reloading config etc.
+alt-shift-semicolon = 'mode service'
+
+[mode.resize.binding]
+h = 'resize width -50'
+j = 'resize height +50'
+k = 'resize height -50'
+l = 'resize width +50'
+enter = 'mode main'
+esc = 'mode main'
+
+[mode.service.binding]
+r = ['reload-config', 'mode main']
+f = ['flatten-workspace-tree', 'mode main']
+esc = 'mode main'
+
+# Window detection rules
+# Float specific app types (like sway for_window rules)
+[[on-window-detected]]
+if.app-name-regex-substring = 'System (Settings|Preferences)'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-name-regex-substring = 'Calculator'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-name-regex-substring = 'Sherlock'
+run = 'layout floating'
+
+# Assign apps to workspaces (like sway assign rules)
+# Uncomment and customize:
+# [[on-window-detected]]
+# if.app-id = 'com.apple.Safari'
+# run = 'move-node-to-workspace 2'

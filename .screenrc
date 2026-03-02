@@ -77,7 +77,7 @@ termcapinfo   xterm 'XC=K%,%\E(B,[\304,\\\\\326,]\334,{\344,|\366,}\374,~\337'
 # - uses background color for delete operations
 termcapinfo xterm ut
 
-# Modern terminal support (256-color passthrough, Ghostty/iTerm2/etc.)
+# Modern terminal support (256-color passthrough, Alacritty/iTerm2/etc.)
 termcapinfo xterm*|screen* 'Co#256:AB=\E[48;5;%dm:AF=\E[38;5;%dm'
 # Allow bold/dim/italic/underline passthrough
 attrcolor b ".I"

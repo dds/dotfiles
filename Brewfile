@@ -118,6 +118,8 @@ brew "multimarkdown"
 brew "borgbackup/tap/borgbackup-fuse"
 
 # Casks — GUI applications
+cask "aerospace"
+cask "alacritty"
 cask "aldente"
 cask "anki"
 cask "docker"
