@@ -31,5 +31,5 @@ brew bundle
 
 ## Pending
 
-- Push to origin (2 commits ahead of `origin/master`): run `git push origin master`
+- Push to origin (4 commits ahead of `origin/master`): run `git push origin master`
 </content>
