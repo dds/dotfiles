@@ -29,7 +29,7 @@ brew bundle
 - **Window manager**: AeroSpace (alt-based sway-inspired keybindings)
 - **Multiplexer**: GNU Screen
 
-## Pending
+## Homebrew
 
-- Push to origin (4 commits ahead of `origin/master`): run `git push origin master`
+The `Brewfile` requires the `nikitabobko/tap` tap for AeroSpace. Run `brew bundle` to install all dependencies. Note: if `brew bundle` fails due to stale installed formulae (e.g. removed-from-Homebrew packages like `libbitcoin`), uninstall the offending package first with `brew uninstall <pkg>`.
 </content>

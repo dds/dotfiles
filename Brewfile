@@ -5,6 +5,7 @@ tap "d12frosted/emacs-plus"
 tap "golangci/tap"
 tap "homebrew/bundle"
 tap "homebrew/services"
+tap "nikitabobko/tap"
 
 # Build tools
 brew "autoconf"
@@ -118,7 +119,7 @@ brew "multimarkdown"
 brew "borgbackup/tap/borgbackup-fuse"
 
 # Casks — GUI applications
-cask "aerospace"
+cask "nikitabobko/tap/aerospace"
 cask "kitty"
 cask "aldente"
 cask "anki"
