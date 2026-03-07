@@ -1,0 +1,86 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+usage() {
+  cat <<EOF
+Usage: $(basename "$0") [-q quality] [-d dpi] <file.pdf> [file2.pdf ...]
+
+Convert PDF files to JPEG images, one per page.
+
+Options:
+  -q  JPEG quality 1-100 (default: 90)
+  -d  DPI resolution (default: 150)
+  -h  Show this help
+
+Output:
+  For each input file, produces <basename>_page1.jpg, <basename>_page2.jpg, ...
+  in the same directory as the input PDF.
+
+Backends (auto-detected):
+  pdftoppm (poppler)   preferred, faster, no policy restrictions
+  ImageMagick          fallback
+EOF
+  exit "${1:-0}"
+}
+
+QUALITY=90
+DPI=150
+
+while getopts "q:d:h" opt; do
+  case $opt in
+    q) QUALITY=$OPTARG ;;
+    d) DPI=$OPTARG ;;
+    h) usage 0 ;;
+    *) usage 1 ;;
+  esac
+done
+shift $((OPTIND - 1))
+
+[[ "${1:-}" == "--help" ]] && usage 0
+[[ $# -eq 0 ]] && usage 1
+
+if command -v pdftoppm &>/dev/null; then
+  BACKEND=pdftoppm
+elif command -v magick &>/dev/null || command -v convert &>/dev/null; then
+  BACKEND=imagemagick
+else
+  echo "No backend found. Install one:"
+  echo "  brew install poppler       # macOS, recommended"
+  echo "  apt install poppler-utils  # Debian/Ubuntu"
+  echo "  brew install imagemagick   # macOS fallback"
+  exit 1
+fi
+
+echo "Backend: $BACKEND"
+
+convert_pdf() {
+  local pdf="$1"
+  [[ -f "$pdf" ]] || { echo "File not found: $pdf"; return 1; }
+
+  local base
+  base="$(dirname "$pdf")/$(basename "$pdf" .pdf)"
+
+  echo "Converting: $pdf"
+
+  if [[ "$BACKEND" == "pdftoppm" ]]; then
+    pdftoppm -jpeg -r "$DPI" -jpegopt "quality=$QUALITY" "$pdf" "${base}_page"
+    for f in "${base}_page"-*.jpg; do
+      [[ -e "$f" ]] || continue
+      num="${f##*-}"
+      num="${num%.jpg}"
+      num="${num##"${num%%[!0]*}"}"
+      [[ -z "$num" ]] && num=0
+      mv "$f" "${base}_page${num}.jpg"
+    done
+  else
+    local cmd=convert
+    command -v magick &>/dev/null && cmd="magick convert"
+    $cmd -density "$DPI" "$pdf" -quality "$QUALITY" -scene 1 "${base}_page%d.jpg"
+  fi
+
+  echo "  -> $(ls "${base}"_page*.jpg | wc -l | tr -d ' ') pages written"
+}
+
+for pdf in "$@"; do
+  convert_pdf "$pdf"
+done
