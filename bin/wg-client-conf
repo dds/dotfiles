@@ -1,0 +1,68 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+WG_DIR="${WG_DIR:-$HOME/.config/wireguard}"
+PRIVKEY="$WG_DIR/private.key"
+
+usage() {
+    cat <<EOF
+Usage: wg-client-conf --endpoint HOST:PORT --server-pubkey KEY --address CIDR [OPTIONS]
+
+Generate a WireGuard client config and print to stdout.
+
+Required:
+  --endpoint HOST:PORT    Server endpoint (e.g. vpn.example.com:51820)
+  --server-pubkey KEY     Server's public key
+  --address CIDR          Client tunnel address (e.g. 10.0.0.2/24)
+
+Optional:
+  --dns SERVERS           DNS servers (e.g. 1.1.1.1, 9.9.9.9)
+  --allowed-ips CIDRS     Allowed IPs (default: 0.0.0.0/0, ::/0)
+  --keepalive SECS        PersistentKeepalive interval (default: 25)
+EOF
+    exit "${1:-0}"
+}
+
+endpoint="" server_pubkey="" address="" dns="" allowed_ips="0.0.0.0/0, ::/0" keepalive=25
+
+while [ $# -gt 0 ]; do
+    case "$1" in
+        --endpoint)      endpoint="$2"; shift 2 ;;
+        --server-pubkey) server_pubkey="$2"; shift 2 ;;
+        --address)       address="$2"; shift 2 ;;
+        --dns)           dns="$2"; shift 2 ;;
+        --allowed-ips)   allowed_ips="$2"; shift 2 ;;
+        --keepalive)     keepalive="$2"; shift 2 ;;
+        --help|-h)       usage 0 ;;
+        *)               echo "Unknown option: $1" >&2; usage 1 ;;
+    esac
+done
+
+[ -z "$endpoint" ] && { echo "Error: --endpoint is required" >&2; usage 1; }
+[ -z "$server_pubkey" ] && { echo "Error: --server-pubkey is required" >&2; usage 1; }
+[ -z "$address" ] && { echo "Error: --address is required" >&2; usage 1; }
+
+if [ ! -f "$PRIVKEY" ]; then
+    echo "Error: private key not found at $PRIVKEY" >&2
+    echo "Run wg-genkeys first." >&2
+    exit 1
+fi
+
+private_key=$(cat "$PRIVKEY")
+
+cat <<EOF
+[Interface]
+PrivateKey = ${private_key}
+Address = ${address}
+EOF
+
+[ -n "$dns" ] && echo "DNS = ${dns}"
+
+cat <<EOF
+
+[Peer]
+PublicKey = ${server_pubkey}
+Endpoint = ${endpoint}
+AllowedIPs = ${allowed_ips}
+PersistentKeepalive = ${keepalive}
+EOF

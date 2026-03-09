@@ -72,6 +72,7 @@ brew "nss"
 brew "openldap"
 brew "openssl@3"
 brew "wget"
+brew "wireguard-tools"
 
 # Data & databases
 brew "jq"

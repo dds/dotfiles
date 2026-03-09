@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+WG_DIR="${WG_DIR:-$HOME/.config/wireguard}"
+PRIVKEY="$WG_DIR/private.key"
+PUBKEY="$WG_DIR/public.key"
+
+usage() {
+    echo "Usage: wg-genkeys [--force]"
+    echo
+    echo "Generate a WireGuard keypair in $WG_DIR"
+    echo "Skips generation if keys already exist unless --force is given."
+    exit "${1:-0}"
+}
+
+force=false
+for arg in "$@"; do
+    case "$arg" in
+        --force) force=true ;;
+        --help|-h) usage 0 ;;
+        *) echo "Unknown option: $arg" >&2; usage 1 ;;
+    esac
+done
+
+if [ -f "$PRIVKEY" ] && [ "$force" = false ]; then
+    echo "Keys already exist in $WG_DIR (use --force to regenerate)" >&2
+    cat "$PUBKEY"
+    exit 0
+fi
+
+mkdir -p "$WG_DIR"
+chmod 700 "$WG_DIR"
+
+umask 077
+wg genkey | tee "$PRIVKEY" | wg pubkey > "$PUBKEY"
+
+echo "Keys generated in $WG_DIR" >&2
+cat "$PUBKEY"

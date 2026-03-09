@@ -1,0 +1,69 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+usage() {
+    cat <<EOF
+Usage: wg-setup --endpoint HOST:PORT --server-pubkey KEY --address CIDR [OPTIONS]
+
+Generate WireGuard client config and server peer stanza.
+
+Required:
+  --endpoint HOST:PORT    Server endpoint (e.g. vpn.example.com:51820)
+  --server-pubkey KEY     Server's public key
+  --address CIDR          Client tunnel address (e.g. 10.0.0.2/24)
+
+Optional:
+  --dns SERVERS           DNS servers (e.g. 1.1.1.1, 9.9.9.9)
+  --allowed-ips CIDRS     Allowed IPs (default: 0.0.0.0/0, ::/0)
+  --keepalive SECS        PersistentKeepalive interval (default: 25)
+  --force-keys            Regenerate keys even if they exist
+EOF
+    exit "${1:-0}"
+}
+
+endpoint="" server_pubkey="" address="" dns="" allowed_ips="" keepalive=""
+force_keys=false
+passthrough=()
+
+while [ $# -gt 0 ]; do
+    case "$1" in
+        --endpoint)      endpoint="$2"; passthrough+=(--endpoint "$2"); shift 2 ;;
+        --server-pubkey) server_pubkey="$2"; passthrough+=(--server-pubkey "$2"); shift 2 ;;
+        --address)       address="$2"; passthrough+=(--address "$2"); shift 2 ;;
+        --dns)           dns="$2"; passthrough+=(--dns "$2"); shift 2 ;;
+        --allowed-ips)   allowed_ips="$2"; passthrough+=(--allowed-ips "$2"); shift 2 ;;
+        --keepalive)     keepalive="$2"; passthrough+=(--keepalive "$2"); shift 2 ;;
+        --force-keys)    force_keys=true; shift ;;
+        --help|-h)       usage 0 ;;
+        *)               echo "Unknown option: $1" >&2; usage 1 ;;
+    esac
+done
+
+[ -z "$endpoint" ] && { echo "Error: --endpoint is required" >&2; usage 1; }
+[ -z "$server_pubkey" ] && { echo "Error: --server-pubkey is required" >&2; usage 1; }
+[ -z "$address" ] && { echo "Error: --address is required" >&2; usage 1; }
+
+# Extract /32 from the address for the peer stanza
+client_ip="${address%%/*}"
+
+# Step 1: Generate keys
+echo "=== Generating keys ===" >&2
+if [ "$force_keys" = true ]; then
+    wg-genkeys --force >/dev/null
+else
+    wg-genkeys >/dev/null
+fi
+echo >&2
+
+# Step 2: Client config
+echo "### CLIENT CONFIG (save to /etc/wireguard/wg0.conf) ###"
+echo
+wg-client-conf "${passthrough[@]}"
+
+echo
+echo
+
+# Step 3: Server peer stanza
+echo "### SERVER PEER STANZA (append to server's wg0.conf) ###"
+echo
+wg-peer-stanza --client-ip "${client_ip}/32"

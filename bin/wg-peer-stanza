@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+WG_DIR="${WG_DIR:-$HOME/.config/wireguard}"
+PUBKEY="$WG_DIR/public.key"
+
+usage() {
+    cat <<EOF
+Usage: wg-peer-stanza --client-ip CIDR
+
+Generate a [Peer] stanza for the server's WireGuard config.
+
+Required:
+  --client-ip CIDR    Client's tunnel IP as /32 (e.g. 10.0.0.2/32)
+EOF
+    exit "${1:-0}"
+}
+
+client_ip=""
+
+while [ $# -gt 0 ]; do
+    case "$1" in
+        --client-ip) client_ip="$2"; shift 2 ;;
+        --help|-h)   usage 0 ;;
+        *)           echo "Unknown option: $1" >&2; usage 1 ;;
+    esac
+done
+
+[ -z "$client_ip" ] && { echo "Error: --client-ip is required" >&2; usage 1; }
+
+if [ ! -f "$PUBKEY" ]; then
+    echo "Error: public key not found at $PUBKEY" >&2
+    echo "Run wg-genkeys first." >&2
+    exit 1
+fi
+
+public_key=$(cat "$PUBKEY")
+
+cat <<EOF
+[Peer]
+PublicKey = ${public_key}
+AllowedIPs = ${client_ip}
+EOF
