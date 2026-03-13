@@ -5,7 +5,9 @@ nethack on
 monitor on
 silence off
 vbell_msg "--beep--"
-term screen-256color
+term xterm-256color
+altscreen on
+maptimeout 0
 
 # This is how one can set a reattach password:
 # password ODSJQf.4IJN7E    # "1234"
