@@ -119,7 +119,7 @@ if.app-name-regex-substring = 'Sherlock'
 run = 'layout floating'
 
 [[on-window-detected]]
-if.app-name-regex-substring = 'Snipaste'
+if.app-name-regex-substring = 'Shottr'
 run = 'layout floating'
 
 # Assign apps to workspaces (like sway assign rules)
