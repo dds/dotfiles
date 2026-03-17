@@ -16,8 +16,7 @@ if $COLORTERM ==# 'truecolor' || $COLORTERM ==# '24bit'
   set termguicolors
 endif
 set background=dark
-let g:gruvbox_contrast_dark = 'medium'
-silent! colorscheme gruvbox
+silent! colorscheme retrobox
 set number
 set relativenumber
 set signcolumn=yes
