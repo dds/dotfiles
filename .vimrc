@@ -84,4 +84,6 @@ nnoremap <leader>/ :g/
 " --- Strip trailing whitespace on save ---
 autocmd BufWritePre * :%s/\s\+$//e
 
-source $LOCAL_ADMIN_SCRIPTS/master.vimrc
+if filereadable($LOCAL_ADMIN_SCRIPTS . '/master.vimrc')
+  source $LOCAL_ADMIN_SCRIPTS/master.vimrc
+endif
