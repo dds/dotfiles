@@ -128,3 +128,11 @@ unset -f _polyglot_is_ssh _polyglot_is_busybox _polyglot_is_dtksh \
 
 # Aliases, platform detection, keychain
 [ -r ~/.bash/aliases.bash ] && . ~/.bash/aliases.bash
+[ -r "$HOME/.acme.sh/acme.sh.env" ] && . "$HOME/.acme.sh/acme.sh.env"
+
+# Suppress gt's "Add '$repo' to Gas Town?" prompt on cd into unregistered repos.
+export GASTOWN_DISABLE_OFFER_ADD=1
+
+# --- Gas Town Integration (managed by gt) ---
+[ -r "$HOME/.config/gastown/shell-hook.sh" ] && . "$HOME/.config/gastown/shell-hook.sh"
+# --- End Gas Town ---
