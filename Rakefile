@@ -20,6 +20,7 @@ symlinks = FileList[
   '.profile',
   '.doom.d',
   '.screenrc',
+  '.tmux.conf',
   '.spacemacs.d',
   '.aerospace.toml',
   '.gitconfig',
