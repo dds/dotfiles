@@ -134,5 +134,5 @@ unset -f _polyglot_is_ssh _polyglot_is_busybox _polyglot_is_dtksh \
 export GASTOWN_DISABLE_OFFER_ADD=1
 
 # --- Gas Town Integration (managed by gt) ---
-[ -r "$HOME/.config/gastown/shell-hook.sh" ] && . "$HOME/.config/gastown/shell-hook.sh"
+[ -r "$HOME/.config/gastown/shell-hook.sh" ] && . "$HOME/.config/gastown/shell-hook.sh" || true
 # --- End Gas Town ---
